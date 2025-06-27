@@ -339,14 +339,16 @@ const HotelJuneLanding = () => {
         <div className="max-w-6xl mx-auto px-6">
           <h3 className="text-4xl font-light text-center mb-16 text-gray-900">Locations</h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {data.locations.map((location, index) => (
               <div key={index} className="bg-amber-50 overflow-hidden">
-                <img 
-                  src={location.image}
-                  alt={location.name}
-                  className="w-[370px] h-[285px] object-cover"
-                />
+                <div className="flex justify-center">
+                  <img 
+                    src={location.image}
+                    alt={location.name}
+                    className="w-[370px] h-[285px] object-cover"
+                  />
+                </div>
                 <div className="p-8 bg-amber-50 text-center">
                   <h4 className="text-2xl font-light mb-4 text-gray-900">{location.name}</h4>
                   <p className="text-gray-600 leading-relaxed mb-6">
