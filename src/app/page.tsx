@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, MapPin, Calendar, Users, Menu, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Calendar, Users, Menu } from 'lucide-react';
 
 // Contentful client setup
 const createClient = () => {
@@ -190,48 +190,53 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-light">HOTEL JUNE</div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-sm font-medium hover:text-gray-600 transition-colors">STAY</a>
-              <a href="#" className="text-sm font-medium hover:text-gray-600 transition-colors">DINE</a>
-              <a href="#" className="text-sm font-medium hover:text-gray-600 transition-colors">GATHER</a>
-              <a href="#" className="text-sm font-medium hover:text-gray-600 transition-colors">JOURNAL</a>
-              <a href="#" className="text-sm font-medium hover:text-gray-600 transition-colors">CONTACT</a>
-            </nav>
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-        
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-t">
-            <div className="px-6 py-4 space-y-4">
-              <a href="#" className="block text-sm font-medium">STAY</a>
-              <a href="#" className="block text-sm font-medium">DINE</a>
-              <a href="#" className="block text-sm font-medium">GATHER</a>
-              <a href="#" className="block text-sm font-medium">JOURNAL</a>
-              <a href="#" className="block text-sm font-medium">CONTACT</a>
-            </div>
-          </div>
-        )}
-      </header>
-
-      {/* Hero Section */}
-      <section className="relative h-screen flex flex-col justify-center text-white text-center"
+      {/* Hero Section with Integrated Navigation */}
+      <section className="relative h-screen flex flex-col text-white text-center"
                style={{
                  backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${data.hero.heroImage || data.hero.image || 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop'}')`,
                  backgroundSize: 'cover',
                  backgroundPosition: 'center'
                }}>
+        
+        {/* Top Navigation Bar */}
+        <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-6">
+          {/* Hamburger Menu - Top Left */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-white hover:text-gray-300 transition-colors"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+          
+          {/* Hotel June Logo - Center */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-light text-white">
+            hotel june
+          </div>
+          
+          {/* Destinations Dropdown - Top Right */}
+          <div className="relative">
+            <button className="text-white hover:text-gray-300 transition-colors flex items-center text-sm font-medium tracking-wider">
+              DESTINATIONS
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        {mobileMenuOpen && (
+          <div className="absolute top-0 left-0 right-0 bg-black/90 backdrop-blur-sm z-40 pt-20">
+            <div className="px-6 py-8 space-y-6">
+              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">STAY</a>
+              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">DINE</a>
+              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">GATHER</a>
+              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">JOURNAL</a>
+              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">CONTACT</a>
+            </div>
+          </div>
+        )}
+
         {/* Main Hero Content */}
         <div className="flex-1 flex items-center justify-center">
           <div className="max-w-4xl px-6">
