@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, MapPin, Calendar, Users, Star, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Calendar, Users } from 'lucide-react';
 
 // Contentful client setup
 const createContentfulClient = () => {
