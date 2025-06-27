@@ -1,103 +1,564 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight, MapPin, Calendar, Users, Star, ArrowRight } from 'lucide-react';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+// Contentful client setup
+const createContentfulClient = () => {
+  // Safe environment variable checking that works in all environments
+  const getEnvVar = (key) => {
+    try {
+      return process?.env?.[key] || null;
+    } catch {
+      return null;
+    }
+  };
+  
+  const CONTENTFUL_SPACE_ID = getEnvVar('REACT_APP_CONTENTFUL_SPACE_ID');
+  const CONTENTFUL_ACCESS_TOKEN = getEnvVar('REACT_APP_CONTENTFUL_ACCESS_TOKEN');
+  
+  // Check if we have valid credentials
+  const hasValidCredentials = CONTENTFUL_SPACE_ID && CONTENTFUL_ACCESS_TOKEN && 
+    CONTENTFUL_SPACE_ID !== 'your-space-id' && CONTENTFUL_ACCESS_TOKEN !== 'your-access-token';
+  
+  return {
+    getEntries: async (contentType) => {
+      if (!hasValidCredentials) {
+        console.log('🔧 No Contentful credentials found - using fallback content');
+        return null; // This will trigger fallback content
+      }
+      
+      try {
+        const response = await fetch(
+          `https://cdn.contentful.com/spaces/${CONTENTFUL_SPACE_ID}/entries?content_type=${contentType}&access_token=${CONTENTFUL_ACCESS_TOKEN}`
+        );
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching from Contentful:', error);
+        return null;
+      }
+    },
+    getAsset: async (assetId) => {
+      if (!hasValidCredentials) {
+        return null;
+      }
+      
+      try {
+        const response = await fetch(
+          `https://cdn.contentful.com/spaces/${CONTENTFUL_SPACE_ID}/assets/${assetId}?access_token=${CONTENTFUL_ACCESS_TOKEN}`
+        );
+        const asset = await response.json();
+        return asset.fields.file.url;
+      } catch (error) {
+        console.error('Error fetching asset:', error);
+        return null;
+      }
+    }
+  };
+};
+
+const HotelJuneLanding = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentAmenityIndex, setCurrentAmenityIndex] = useState(0);
+  const [pageData, setPageData] = useState(null);
+  const [loading, setLoading] = useState(false); // Start with false for demo
+  const [error, setError] = useState(null);
+
+  const client = createContentfulClient();
+
+  // Fetch data from Contentful
+  useEffect(() => {
+    const fetchData = async () => {
+      // Safe environment check that works in all environments
+      const getEnvVar = (key) => {
+        try {
+          return (typeof process !== 'undefined' && process?.env?.[key]) || null;
+        } catch {
+          return null;
+        }
+      };
+      
+      // Check if we have API credentials first
+      const hasCredentials = getEnvVar('REACT_APP_CONTENTFUL_SPACE_ID') && 
+        getEnvVar('REACT_APP_CONTENTFUL_ACCESS_TOKEN');
+      
+      if (!hasCredentials) {
+        console.log('🎨 Demo mode: Using beautiful fallback content');
+        return; // Skip loading, use fallback data
+      }
+      
+      try {
+        setLoading(true);
+        
+        // Fetch different content types
+        const [
+          hotelPageData,
+          bungalowData, 
+          amenitiesData,
+          journalData
+        ] = await Promise.all([
+          client.getEntries('hotelPage'),
+          client.getEntries('bungalow'),
+          client.getEntries('amenity'),
+          client.getEntries('journalPost')
+        ]);
+
+        // Process and structure the data
+        const processedData = {
+          hero: hotelPageData?.items?.[0]?.fields || {},
+          bungalows: bungalowData?.items || [],
+          amenities: amenitiesData?.items || [],
+          journalPosts: journalData?.items || []
+        };
+
+        setPageData(processedData);
+      } catch (err) {
+        setError(err.message);
+        console.error('Error loading page data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Fallback data while loading or if Contentful fails
+  const fallbackData = {
+    hero: {
+      title: "Your Private\nMalibu Retreat",
+      subtitle: "Nestled Into Four Lush Acres on PCH",
+      heroImage: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop",
+      welcomeTitle: "Welcome to Hotel June Malibu",
+      welcomeDescription: "Hotel June Malibu is a unique retreat space for intimate gatherings, corporate offsites, and personal getaways in a sprawling wellness, meditation, and artistic center nestled into four lush acres overlooking the Pacific. When we say it's a place for intimate thought, we mean that we host gatherings, executive get-togethers, wellness group sessions, and retreats. Wellness takes an important role as a Spa featuring therapy and contemplative massage is a big offering and presence in the resort; and corporate groups, perfect setting for traveling CEOs."
+    },
+    bungalows: {
+      title: "Bungalows",
+      description: "Discover our variety of sleeping options for visitors on or off of Malibu, from our oceanfront property to our inland courtyard. Choose one that works for you and your party's needs. Located in different areas of the world's bungalows with a private view of the world and the Pacific. Mixed with vine wine along the path and tasting, combined with different moments and nights spent dancing on the Malibu Shore. Mostly visits made on the Malibu.",
+      ctaText: "EXPLORE BUNGALOWS",
+      images: [
+        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop"
+      ]
+    },
+    amenities: {
+      title: "Amenities",
+      subtitle: "Everything you need and nothing you don't",
+      ctaText: "EXPLORE AMENITIES",
+      list: [
+        "Heated outdoor pool",
+        "Poolside and Courtyard & Beachside dining", 
+        "Two restaurant & bar destinations",
+        "24-hour Wellness",
+        "Eight unique meeting room spaces",
+        "Pet Friendly"
+      ],
+      images: [
+        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop"
+      ]
+    },
+    journalPosts: [
+      {
+        date: "WEST LA | FEBRUARY 21, 2025",
+        title: "Health and Wellness: Yoga, Spas, and Fitness on the West Side",
+        image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop"
+      },
+      {
+        date: "MALIBU | FEBRUARY 21, 2025", 
+        title: "Hotel June by Chelsea Cutler",
+        image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop"
+      },
+      {
+        date: "WEST LA | FEBRUARY 15, 2025",
+        title: "The Best of Santa Monica: A Guide to Restaurants, Shopping, Wellness, and Outdoor Activities",
+        image: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=300&fit=crop"
+      }
+    ]
+  };
+
+  // Use Contentful data if available, otherwise fallback
+  const data = pageData || fallbackData;
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Hotel June experience...</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">Error loading content: {error}</p>
+          <p className="text-gray-600">Falling back to demo content...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-50 p-6">
+        <div className="flex justify-between items-center">
+          <div className="text-white font-light tracking-wider">
+            <div className="text-xl">hotel june</div>
+            <div className="text-xs opacity-75">MALIBU</div>
+          </div>
+          <button className="text-white text-sm tracking-wider opacity-75 hover:opacity-100">
+            DESTINATIONS ▼
+          </button>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center text-white text-center"
+               style={{
+                 backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${data.hero.heroImage || data.hero.image || 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop'}')`,
+                 backgroundSize: 'cover',
+                 backgroundPosition: 'center'
+               }}>
+        <div className="max-w-4xl px-6">
+          <h1 className="text-6xl md:text-7xl font-light mb-6 leading-tight">
+            {data.hero.title?.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                {index < data.hero.title.split('\n').length - 1 && <br />}
+              </span>
+            )) || "Your Private Malibu Retreat"}
+          </h1>
+          <p className="text-xl mb-12 opacity-90 max-w-2xl mx-auto">
+            {data.hero.subtitle || "Nestled Into Four Lush Acres on PCH"}
+          </p>
+          
+          {/* Booking Widget */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+              <div className="flex items-center text-left">
+                <MapPin className="w-5 h-5 mr-3" />
+                <div>
+                  <div className="text-xs opacity-75">SELECT LOCATION</div>
+                  <div className="font-medium">Malibu</div>
+                </div>
+              </div>
+              <div className="flex items-center text-left">
+                <Calendar className="w-5 h-5 mr-3" />
+                <div>
+                  <div className="text-xs opacity-75">ADD DATES</div>
+                  <div className="font-medium">Check availability</div>
+                </div>
+              </div>
+              <div className="flex items-center text-left">
+                <Users className="w-5 h-5 mr-3" />
+                <div>
+                  <div className="text-xs opacity-75">TOTAL GUESTS</div>
+                  <div className="font-medium">2 guests</div>
+                </div>
+              </div>
+              <button className="bg-orange-400 hover:bg-orange-500 text-black font-medium py-3 px-8 rounded transition-colors">
+                BOOK NOW
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Welcome Section */}
+      <section className="py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-light mb-8 text-center">
+            {data.hero.welcomeTitle || "Welcome to Hotel June Malibu"}
+          </h2>
+          <p className="text-lg text-gray-600 leading-relaxed max-w-4xl mx-auto text-center">
+            {data.hero.welcomeDescription || `Hotel June Malibu is a unique retreat space for intimate gatherings, corporate offsites, and personal getaways in a 
+            sprawling wellness, meditation, and artistic center nestled into four lush acres overlooking the Pacific. When we 
+            say it's a place for intimate thought, we mean that we host gatherings, executive get-togethers, wellness group 
+            sessions, and retreats. Wellness takes an important role as a Spa featuring therapy and contemplative massage 
+            is a big offering and presence in the resort; and corporate groups, perfect setting for traveling CEOs.`}
+          </p>
+        </div>
+      </section>
+
+      {/* Bungalows Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="relative">
+              <img 
+                src={data.bungalows.images?.[currentImageIndex] || 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop'}
+                alt="Bungalow"
+                className="w-full h-96 object-cover rounded-lg"
+              />
+              <button 
+                onClick={() => setCurrentImageIndex(prev => {
+                  const images = data.bungalows.images || [];
+                  return prev > 0 ? prev - 1 : images.length - 1;
+                })}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={() => setCurrentImageIndex(prev => {
+                  const images = data.bungalows.images || [];
+                  return prev < images.length - 1 ? prev + 1 : 0;
+                })}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <div className="flex justify-center mt-4 space-x-2">
+                {(data.bungalows.images || []).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentImageIndex ? 'bg-gray-800' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <h3 className="text-4xl font-light mb-6">
+                {data.bungalows.title || "Bungalows"}
+              </h3>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                {data.bungalows.description || `Discover our variety of sleeping options for visitors on or off of Malibu, from our oceanfront property to our 
+                inland courtyard. Choose one that works for you and your party's needs. Located in different 
+                areas of the world's bungalows with a private view of the world and the Pacific. 
+                Mixed with vine wine along the path and tasting, combined with different moments and 
+                nights spent dancing on the Malibu Shore. Mostly visits made on the Malibu.`}
+              </p>
+              <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
+                {data.bungalows.ctaText || "EXPLORE BUNGALOWS"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Malibu Experience Section */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h3 className="text-4xl font-light mb-6">Malibu: A True Local Experience</h3>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Discover an entirely new way to experience Malibu, one of Southern California's most iconic and inspiring destinations.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                <img 
+                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
+                  alt="Malibu coastline"
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+                <img 
+                  src="https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=300&fit=crop"
+                  alt="Malibu pier"
+                  className="w-full h-48 object-cover rounded-lg"
+                />
+              </div>
+              <p className="text-sm text-gray-500 mt-4">
+                The glory of Malibu is unparalleled — a community centered around some of the world's most beautiful beaches, 
+                surrounded by nature and filled with endless opportunities for adventure. Point Dume, and Surfrider Beach, one of the hottest 
+                surfing and nightlife spots, one of the hottest surfing spots in Malibu's shoreline route along of our coast, natural and free locations.
+              </p>
+              <button className="mt-6 border border-gray-900 text-gray-900 px-8 py-3 rounded hover:bg-gray-900 hover:text-white transition-colors">
+                LEARN MORE
+              </button>
+            </div>
+            <div>
+              <img 
+                src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&h=800&fit=crop"
+                alt="Malibu experience"
+                className="w-full h-96 object-cover rounded-lg"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Amenities Section */}
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h3 className="text-4xl font-light mb-6">
+                {data.amenities.title || "Amenities"}
+              </h3>
+              <p className="text-2xl font-light mb-8 text-gray-700">
+                {data.amenities.subtitle || "Everything you need and nothing you don't"}
+              </p>
+              
+              <div className="space-y-4 mb-8">
+                {(data.amenities.list || []).map((amenity, index) => (
+                  <div key={index} className="flex items-center">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-4"></div>
+                    <span className="text-gray-600">
+                      {typeof amenity === 'string' ? amenity : amenity.fields?.name || amenity.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              
+              <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
+                {data.amenities.ctaText || "EXPLORE AMENITIES"}
+              </button>
+            </div>
+            <div className="relative">
+              <img 
+                src={data.amenities.images?.[currentAmenityIndex] || 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop'}
+                alt="Amenities"
+                className="w-full h-96 object-cover rounded-lg"
+              />
+              <button 
+                onClick={() => setCurrentAmenityIndex(prev => {
+                  const images = data.amenities.images || [];
+                  return prev > 0 ? prev - 1 : images.length - 1;
+                })}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={() => setCurrentAmenityIndex(prev => {
+                  const images = data.amenities.images || [];
+                  return prev < images.length - 1 ? prev + 1 : 0;
+                })}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+              <div className="flex justify-center mt-4 space-x-2">
+                {(data.amenities.images || []).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentAmenityIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-colors ${
+                      index === currentAmenityIndex ? 'bg-gray-800' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* June Journal Section */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="text-4xl font-light mb-4">June Journal</h3>
+            <p className="text-gray-600">
+              Feast the June — what's inspiring us right now, from local art to the music to neighborhood discoveries and everything in between.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {(data.journalPosts || []).map((post, index) => (
+              <div key={index} className="group cursor-pointer">
+                <img 
+                  src={post.image || post.fields?.image || post.fields?.featuredImage || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop'}
+                  alt={post.title || post.fields?.title}
+                  className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
+                />
+                <div className="text-xs text-gray-500 mb-2 tracking-wider">
+                  {post.date || post.fields?.publishDate || "MALIBU | FEBRUARY 21, 2025"}
+                </div>
+                <h4 className="text-xl font-light leading-tight group-hover:text-gray-600 transition-colors">
+                  {post.title || post.fields?.title || "Hotel June Experience"}
+                </h4>
+                <button className="mt-4 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
+                  READ MORE
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social Media Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h4 className="text-2xl font-light mb-8">Follow us @hoteljunemalibu and @hoteljunewestla</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1,2,3,4].map((i) => (
+              <div key={i} className="aspect-square bg-yellow-400 rounded-lg"></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 bg-gray-100">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <h4 className="text-2xl font-light mb-8">Be the first to know everything about Hotel June.</h4>
+          <div className="flex gap-4">
+            <input 
+              type="email" 
+              placeholder="Email Address"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gray-500"
+            />
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-8 py-3 rounded font-medium transition-colors">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <h5 className="font-medium mb-4">hotel june</h5>
+            </div>
+            <div>
+              <h6 className="font-medium mb-4 text-sm">HOTELS</h6>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div>CONTACT</div>
+                <div>CAREERS</div>
+                <div>PRESS</div>
+                <div>GIFT CARDS</div>
+              </div>
+            </div>
+            <div>
+              <h6 className="font-medium mb-4 text-sm">ADVENTURES</h6>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div>TERMS OF USE</div>
+                <div>PRIVACY POLICY</div>
+                <div>ACCESSIBILITY</div>
+                <div>SELECT LANGUAGE</div>
+              </div>
+            </div>
+            <div>
+              <div className="text-sm text-gray-600">
+                A Proper Hospitality Hotel
+              </div>
+              <div className="mt-4 space-y-1 text-sm text-gray-600">
+                <div>PROPER HOTELS</div>
+                <div>HOTEL JUNE</div>
+                <div>THE COLLECTION</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );
-}
+};
+
+export default HotelJuneLanding;
