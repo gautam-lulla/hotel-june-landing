@@ -229,7 +229,7 @@ const HotelJuneLanding = () => {
       </header>
 
       {/* Hero Section with Carousel */}
-      <section className="relative h-96 md:h-[500px]">
+      <section className="relative h-[570px]">
         <div 
           className="absolute inset-0 bg-cover bg-center transition-all duration-500"
           style={{
@@ -247,7 +247,7 @@ const HotelJuneLanding = () => {
             </h2>
             
             {/* Booking Widget */}
-            <div className="bg-white text-black p-6 max-w-5xl">
+            <div className="bg-white text-black p-6 max-w-5xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
                 <div className="flex items-center">
                   <MapPin className="w-5 h-5 mr-3 text-gray-600" />
@@ -307,15 +307,30 @@ const HotelJuneLanding = () => {
         </div>
       </section>
 
-      {/* Welcome Section */}
+      {/* Welcome Section - Two Column Layout */}
       <section className="py-20 px-6 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-light mb-8 text-gray-900">
-            {data.welcome.title}
-          </h2>
-          <p className="text-lg text-gray-600 leading-relaxed">
-            {data.welcome.description}
-          </p>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-light mb-8 text-gray-900">
+                {data.welcome.title}
+              </h2>
+              <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                {data.welcome.description}
+              </p>
+              <button className="border border-gray-900 bg-transparent text-gray-900 px-8 py-3 font-medium tracking-wide hover:bg-gray-900 hover:text-white transition-colors">
+                OUR STORY
+              </button>
+            </div>
+            
+            <div>
+              <img 
+                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=580&h=415&fit=crop"
+                alt="Hotel June Welcome"
+                className="w-[580px] h-[415px] object-cover"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
