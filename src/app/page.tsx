@@ -238,11 +238,11 @@ const HotelJuneLanding = () => {
         />
         
         <div className="relative z-10 h-full flex flex-col justify-center text-white px-6">
-          <div className="max-w-6xl mx-auto w-full">
-            <h1 className="text-4xl md:text-6xl font-light mb-4 tracking-wide">
+          <div className="max-w-6xl mx-auto w-full text-center">
+            <h1 className="text-2xl md:text-3xl font-light mb-4 tracking-wide">
               {data.hero.title}
             </h1>
-            <h2 className="text-5xl md:text-8xl font-light mb-16 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-light mb-16 leading-tight">
               {data.hero.subtitle}
             </h2>
             
@@ -332,12 +332,12 @@ const HotelJuneLanding = () => {
                   alt={location.name}
                   className="w-[370px] h-[285px] object-cover"
                 />
-                <div className="p-8">
+                <div className="p-8 bg-amber-50 text-center">
                   <h4 className="text-2xl font-light mb-4 text-gray-900">{location.name}</h4>
                   <p className="text-gray-600 leading-relaxed mb-6">
                     {location.description}
                   </p>
-                  <button className="bg-gray-900 text-white px-6 py-2 text-sm font-medium tracking-wide hover:bg-gray-800">
+                  <button className="border border-gray-900 bg-transparent text-gray-900 px-6 py-2 text-sm font-medium tracking-wide hover:bg-gray-900 hover:text-white transition-colors">
                     EXPLORE
                   </button>
                 </div>
