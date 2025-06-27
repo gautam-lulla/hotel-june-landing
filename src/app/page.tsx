@@ -120,16 +120,28 @@ export default function HomePage() {
   // Fallback data while loading or if Contentful fails
   const fallbackData = {
     hero: {
-      title: "Your Private\nMalibu Retreat",
-      subtitle: "Nestled Into Four Lush Acres on PCH",
+      title: "Where It's Saturday\nAfternoon All Year Long",
+      subtitle: "Boutique Hotels in Malibu and West LA",
       heroImage: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop",
-      welcomeTitle: "Welcome to Hotel June Malibu",
-      welcomeDescription: "Hotel June Malibu is a unique retreat space for intimate gatherings, corporate offsites, and personal getaways in a sprawling wellness, meditation, and artistic center nestled into four lush acres overlooking the Pacific. When we say it's a place for intimate thought, we mean that we host gatherings, executive get-togethers, wellness group sessions, and retreats. Wellness takes an important role as a Spa featuring therapy and contemplative massage is a big offering and presence in the resort; and corporate groups, perfect setting for traveling CEOs.",
+      welcomeTitle: "Welcome to Hotel June",
+      welcomeDescription: "Hotel June is a new hospitality experience featuring boutique hotels in West LA and Malibu. A feeling of independence and community — a place where discerning guests can come to escape responsibility and recover. June Hotels was established after an epiphany that there are hardly any boutique hotels in Los Angeles that embrace the spirit of youth, which can get lost when hotels become too corporate.",
       welcomeImages: [
         "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
         "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=800&h=600&fit=crop", 
         "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop"
       ]
+    },
+    locations: {
+      westLA: {
+        title: "West LA",
+        description: "Located in West Hollywood with newly opened Catch Steak, a luxury steakhouse paired with Santa Monica and Venice",
+        ctaText: "EXPLORE"
+      },
+      malibu: {
+        title: "Malibu", 
+        description: "Our Private Malibu Retreat Nestled Into Four Lush Acres on Pacific Coast Highway",
+        ctaText: "EXPLORE"
+      }
     },
     bungalows: {
       title: "Bungalows",
@@ -140,6 +152,11 @@ export default function HomePage() {
         "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=600&fit=crop",
         "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop"
       ]
+    },
+    goldenHour: {
+      title: "Golden Hour Starts Here",
+      description: "Ceramic from Chef & Cesar, every's hottest, Best Mexican restaurant and bar in Los Angeles influenced cooking. With a delightfully tart, smooth texture, this one for tacos. Tune this menu for the life you want to live and this golden hour and stay where the stories are every night here.",
+      ctaText: "VISIT CARAVAN"
     },
     amenities: {
       title: "Amenities",
@@ -161,29 +178,29 @@ export default function HomePage() {
     },
     journalPosts: [
       {
-        date: "WEST LA | FEBRUARY 21, 2025",
+        date: "WEST LA | FEBRUARY 21, 2024",
         title: "Health and Wellness: Yoga, Spas, and Fitness on the West Side",
         image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop"
       },
       {
-        date: "MALIBU | FEBRUARY 21, 2025", 
+        date: "MALIBU | FEBRUARY 21, 2024", 
         title: "Hotel June by Chelsea Cutler",
         image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop"
       },
       {
-        date: "WEST LA | FEBRUARY 15, 2025",
-        title: "Sunset Rituals: The Magic Hour at Hotel June",
+        date: "WEST LA | FEBRUARY 21, 2024",
+        title: "The Best of Santa Monica: A Guide to Restaurants, Shopping, Wellness and Attractions",
         image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
       }
     ],
     pressFeatures: [
       {
-        publication: "Los Angeles Magazine",
+        publication: "LA EATER",
         title: "Best Boutique Hotels in Los Angeles",
         thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100&h=100&fit=crop"
       },
       {
-        publication: "Travel + Leisure", 
+        publication: "T+L MAG", 
         title: "The Best New Hotels",
         thumbnail: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=100&h=100&fit=crop"
       },
@@ -251,10 +268,10 @@ export default function HomePage() {
                   {line}
                   {index < data.hero.title.split('\n').length - 1 && <br />}
                 </span>
-              )) || "Your Private Malibu Retreat"}
+              )) || "Where It's Saturday Afternoon All Year Long"}
             </h1>
             <p className="text-xl mb-12 opacity-90 max-w-2xl mx-auto">
-              {data.hero.subtitle || "Nestled Into Four Lush Acres on PCH"}
+              {data.hero.subtitle || "Boutique Hotels in Malibu and West LA"}
             </p>
           </div>
         </div>
@@ -267,7 +284,7 @@ export default function HomePage() {
                 <MapPin className="w-5 h-5 mr-3" />
                 <div>
                   <div className="text-xs opacity-75">SELECT LOCATION</div>
-                  <div className="font-medium">Malibu</div>
+                  <div className="font-medium">West LA & Malibu</div>
                 </div>
               </div>
               <div className="flex items-center text-left">
@@ -298,7 +315,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-light mb-8">
-                {data.hero.welcomeTitle || "Welcome to Hotel June Malibu"}
+                {data.hero.welcomeTitle || "Welcome to Hotel June"}
               </h2>
               <p className="text-lg text-gray-600 leading-relaxed">
                 {data.hero.welcomeDescription || `Hotel June Malibu is a unique retreat space for intimate gatherings, corporate offsites, and personal getaways in a 
@@ -409,45 +426,79 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Malibu Experience Section - FIXED */}
+      {/* Locations Section - FIXED */}
       <section className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="text-4xl font-light mb-4">Locations</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* West LA */}
+            <div className="group cursor-pointer">
+              <img 
+                src="https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=600&h=400&fit=crop"
+                alt="West LA location"
+                className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
+              />
+              <div className="text-center">
+                <h4 className="text-2xl font-light mb-4">{data.locations?.westLA?.title || "West LA"}</h4>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                  {data.locations?.westLA?.description || "Located in West Hollywood with newly opened Catch Steak, a luxury steakhouse paired with Santa Monica and Venice"}
+                </p>
+                <button className="border border-gray-900 text-gray-900 px-8 py-3 rounded hover:bg-gray-900 hover:text-white transition-colors">
+                  {data.locations?.westLA?.ctaText || "EXPLORE"}
+                </button>
+              </div>
+            </div>
+
+            {/* Malibu */}
+            <div className="group cursor-pointer">
+              <img 
+                src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
+                alt="Malibu location"
+                className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
+              />
+              <div className="text-center">
+                <h4 className="text-2xl font-light mb-4">{data.locations?.malibu?.title || "Malibu"}</h4>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                  {data.locations?.malibu?.description || "Our Private Malibu Retreat Nestled Into Four Lush Acres on Pacific Coast Highway"}
+                </p>
+                <button className="border border-gray-900 text-gray-900 px-8 py-3 rounded hover:bg-gray-900 hover:text-white transition-colors">
+                  {data.locations?.malibu?.ctaText || "EXPLORE"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Golden Hour Section */}
+      <section className="py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h3 className="text-4xl font-light mb-6">Malibu: A True Local Experience</h3>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                Discover an entirely new way to experience Malibu, one of Southern California's most iconic and inspiring destinations.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                <img 
-                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
-                  alt="Malibu coastline"
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-                <img 
-                  src="https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=400&h=300&fit=crop"
-                  alt="Malibu pier"
-                  className="w-full h-48 object-cover rounded-lg"
-                />
-              </div>
-              {/* FIXED: Container now matches the width of the image grid above */}
-              <div className="grid grid-cols-2 gap-4">
-                <p className="col-span-2 text-sm text-gray-500 mt-4">
-                  The glory of Malibu is unparalleled — a community centered around some of the world's most beautiful beaches, 
-                  surrounded by nature and filled with endless opportunities for adventure. Point Dume, and Surfrider Beach, one of the hottest 
-                  surfing and nightlife spots, one of the hottest surfing spots in Malibu's shoreline route along of our coast, natural and free locations.
-                </p>
-              </div>
-              <button className="mt-6 border border-gray-900 text-gray-900 px-8 py-3 rounded hover:bg-gray-900 hover:text-white transition-colors">
-                LEARN MORE
-              </button>
-            </div>
-            <div>
               <img 
-                src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&h=800&fit=crop"
-                alt="Malibu experience"
+                src="https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=600&h=600&fit=crop"
+                alt="Golden Hour dining"
                 className="w-full h-96 object-cover rounded-lg"
               />
+            </div>
+            <div className="text-center">
+              <div className="mb-8">
+                <div className="w-20 h-20 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
+                  <div className="text-2xl">🌅</div>
+                </div>
+                <h3 className="text-4xl font-light mb-6">
+                  {data.goldenHour?.title || "Golden Hour Starts Here"}
+                </h3>
+                <p className="text-gray-600 leading-relaxed mb-8 max-w-md mx-auto">
+                  {data.goldenHour?.description || "Ceramic from Chef & Cesar, every's hottest, Best Mexican restaurant and bar in Los Angeles influenced cooking. With a delightfully tart, smooth texture, this one for tacos. Tune this menu for the life you want to live and this golden hour and stay where the stories are every night here."}
+                </p>
+                <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
+                  {data.goldenHour?.ctaText || "VISIT CARAVAN"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -569,7 +620,7 @@ export default function HomePage() {
                   className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
                 />
                 <div className="text-xs text-gray-500 mb-2 tracking-wider">
-                  {post.date || post.fields?.publishDate || "MALIBU | FEBRUARY 21, 2025"}
+                  {post.date || post.fields?.publishDate || "WEST LA | FEBRUARY 21, 2024"}
                 </div>
                 <h4 className="text-xl font-light leading-tight group-hover:text-gray-600 transition-colors">
                   {post.title || post.fields?.title || "Hotel June Experience"}
