@@ -351,28 +351,11 @@ const HotelJuneLanding = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              {/* Simulated Logo */}
-              <div className="w-16 h-16 bg-amber-100 rounded-full mb-8 flex items-center justify-center">
-                <div className="text-amber-600 font-bold text-sm">HJ</div>
-              </div>
-              
-              <h3 className="text-4xl font-light mb-6 text-gray-900">
-                {data.poolSection.title}
-              </h3>
-              <p className="text-gray-600 leading-relaxed mb-8">
-                {data.poolSection.description}
-              </p>
-              <button className="bg-amber-500 text-black px-8 py-3 font-medium tracking-wide hover:bg-amber-600">
-                VISIT CARAVAN
-              </button>
-            </div>
-            
             <div className="relative">
               <img 
                 src={data.poolSection.images[poolImageIndex]}
                 alt="Pool and amenities"
-                className="w-full h-96 object-cover"
+                className="w-[394px] h-[514px] object-cover"
               />
               
               {/* Pool Carousel Controls */}
@@ -403,6 +386,23 @@ const HotelJuneLanding = () => {
                 ))}
               </div>
             </div>
+            
+            <div className="text-center">
+              {/* Simulated Logo */}
+              <div className="w-16 h-16 bg-amber-100 rounded-full mb-8 flex items-center justify-center mx-auto">
+                <div className="text-amber-600 font-bold text-sm">HJ</div>
+              </div>
+              
+              <h3 className="text-4xl font-light mb-6 text-gray-900">
+                {data.poolSection.title}
+              </h3>
+              <p className="text-gray-600 leading-relaxed mb-8">
+                {data.poolSection.description}
+              </p>
+              <button className="bg-amber-500 text-black px-8 py-3 font-medium tracking-wide hover:bg-amber-600">
+                VISIT CARAVAN
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -418,7 +418,7 @@ const HotelJuneLanding = () => {
                 <div className="bg-white/10 h-20 mb-6 flex items-center justify-center">
                   <span className="text-white/60 text-sm">{mention.publication}</span>
                 </div>
-                <h4 className="text-xl font-light leading-tight">
+                <h4 className="text-xl font-light leading-tight text-center">
                   "{mention.title}"
                 </h4>
               </div>
@@ -439,7 +439,7 @@ const HotelJuneLanding = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {data.journalPosts.map((post, index) => (
-              <div key={index} className="group cursor-pointer">
+              <div key={index} className="group cursor-pointer text-center">
                 <img 
                   src={post.image}
                   alt={post.title}
