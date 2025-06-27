@@ -550,16 +550,16 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-white">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <h4 className="text-2xl font-light mb-8">Be the first to know everything about Hotel June.</h4>
-          <div className="flex gap-4">
+          <h4 className="text-xl font-light mb-6">Be the first to know everything about Hotel June.</h4>
+          <div className="flex gap-3">
             <input 
               type="email" 
               placeholder="Email Address"
-              className="flex-1 px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gray-500"
+              className="flex-1 px-4 py-2 border border-gray-300 focus:outline-none focus:border-gray-500 text-sm"
             />
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-8 py-3 rounded font-medium transition-colors">
+            <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 font-medium transition-colors text-sm">
               Subscribe
             </button>
           </div>
@@ -567,34 +567,34 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white py-16">
+      <footer className="bg-gray-50 py-12">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div>
-              <h5 className="font-medium mb-4">HOTEL JUNE</h5>
-              <p className="text-gray-600 text-sm">
+              <h5 className="font-medium mb-3 text-sm">HOTEL JUNE</h5>
+              <p className="text-gray-600 text-xs">
                 Your Private Malibu Retreat
               </p>
             </div>
             <div>
-              <h5 className="font-medium mb-4">STAY</h5>
-              <ul className="space-y-2 text-sm text-gray-600">
+              <h5 className="font-medium mb-3 text-sm">STAY</h5>
+              <ul className="space-y-1 text-xs text-gray-600">
                 <li><a href="#" className="hover:text-gray-900">Bungalows</a></li>
                 <li><a href="#" className="hover:text-gray-900">Amenities</a></li>
                 <li><a href="#" className="hover:text-gray-900">Book Now</a></li>
               </ul>
             </div>
             <div>
-              <h5 className="font-medium mb-4">DISCOVER</h5>
-              <ul className="space-y-2 text-sm text-gray-600">
+              <h5 className="font-medium mb-3 text-sm">DISCOVER</h5>
+              <ul className="space-y-1 text-xs text-gray-600">
                 <li><a href="#" className="hover:text-gray-900">Dining</a></li>
                 <li><a href="#" className="hover:text-gray-900">Wellness</a></li>
                 <li><a href="#" className="hover:text-gray-900">Events</a></li>
               </ul>
             </div>
             <div>
-              <h5 className="font-medium mb-4">CONNECT</h5>
-              <ul className="space-y-2 text-sm text-gray-600">
+              <h5 className="font-medium mb-3 text-sm">CONNECT</h5>
+              <ul className="space-y-1 text-xs text-gray-600">
                 <li><a href="#" className="hover:text-gray-900">Contact</a></li>
                 <li><a href="#" className="hover:text-gray-900">Press</a></li>
                 <li><a href="#" className="hover:text-gray-900">Careers</a></li>
@@ -602,7 +602,7 @@ export default function HomePage() {
             </div>
           </div>
           
-          <div className="mt-12 pt-8 border-t border-gray-200 text-center text-sm text-gray-600">
+          <div className="mt-8 pt-6 border-t border-gray-200 text-center text-xs text-gray-600">
             <p>&copy; 2025 Hotel June. All rights reserved.</p>
           </div>
         </div>
