@@ -42,8 +42,6 @@ const createClient = () => {
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [currentAmenityIndex, setCurrentAmenityIndex] = useState(0);
   const [currentSocialIndex, setCurrentSocialIndex] = useState(0); // Added for carousel
   const [currentWelcomeIndex, setCurrentWelcomeIndex] = useState(0); // Added for welcome carousel
   const [pageData, setPageData] = useState(null);
@@ -126,55 +124,30 @@ export default function HomePage() {
       welcomeTitle: "Welcome to Hotel June",
       welcomeDescription: "Hotel June is a new hospitality experience featuring boutique hotels in West LA and Malibu. A feeling of independence and community — a place where discerning guests can come to escape responsibility and recover. June Hotels was established after an epiphany that there are hardly any boutique hotels in Los Angeles that embrace the spirit of youth, which can get lost when hotels become too corporate.",
       welcomeImages: [
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=800&h=600&fit=crop", 
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop"
+        "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop", 
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&h=600&fit=crop"
       ]
     },
     locations: {
       westLA: {
         title: "West LA",
         description: "Located in West Hollywood with newly opened Catch Steak, a luxury steakhouse paired with Santa Monica and Venice",
-        ctaText: "EXPLORE"
+        ctaText: "EXPLORE",
+        image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&h=400&fit=crop"
       },
       malibu: {
         title: "Malibu", 
         description: "Our Private Malibu Retreat Nestled Into Four Lush Acres on Pacific Coast Highway",
-        ctaText: "EXPLORE"
+        ctaText: "EXPLORE",
+        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
       }
-    },
-    bungalows: {
-      title: "Bungalows",
-      description: "Discover our variety of sleeping options for visitors on or off of Malibu, from our oceanfront property to our inland courtyard. Choose one that works for you and your party's needs. Located in different areas of the world's bungalows with a private view of the world and the Pacific. Mixed with vine wine along the path and tasting, combined with different moments and nights spent dancing on the Malibu Shore. Mostly visits made on the Malibu.",
-      ctaText: "EXPLORE BUNGALOWS",
-      images: [
-        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop"
-      ]
     },
     goldenHour: {
       title: "Golden Hour Starts Here",
       description: "Ceramic from Chef & Cesar, every's hottest, Best Mexican restaurant and bar in Los Angeles influenced cooking. With a delightfully tart, smooth texture, this one for tacos. Tune this menu for the life you want to live and this golden hour and stay where the stories are every night here.",
-      ctaText: "VISIT CARAVAN"
-    },
-    amenities: {
-      title: "Amenities",
-      subtitle: "Everything you need and nothing you don't",
-      ctaText: "EXPLORE AMENITIES",
-      list: [
-        "Heated outdoor pool",
-        "Poolside and Courtyard & Beachside dining", 
-        "Two restaurant & bar destinations",
-        "24-hour Wellness",
-        "Eight unique meeting room spaces",
-        "Pet Friendly"
-      ],
-      images: [
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop"
-      ]
+      ctaText: "VISIT CARAVAN",
+      image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=600&fit=crop"
     },
     journalPosts: [
       {
@@ -329,9 +302,9 @@ export default function HomePage() {
             {/* Welcome Image Carousel */}
             <div className="relative">
               <img 
-                src={data.hero.welcomeImages?.[currentWelcomeIndex] || 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop'}
+                src={data.hero.welcomeImages?.[currentWelcomeIndex] || 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop'}
                 alt="Hotel June Welcome"
-                className="w-full h-96 object-cover rounded-lg"
+                className="w-full h-96 object-cover"
               />
               <button 
                 onClick={() => setCurrentWelcomeIndex(prev => {
@@ -367,65 +340,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Bungalows Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
-              <img 
-                src={data.bungalows.images?.[currentImageIndex] || 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop'}
-                alt="Bungalow"
-                className="w-full h-96 object-cover rounded-lg"
-              />
-              <button 
-                onClick={() => setCurrentImageIndex(prev => {
-                  const images = data.bungalows.images || [];
-                  return prev > 0 ? prev - 1 : images.length - 1;
-                })}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button 
-                onClick={() => setCurrentImageIndex(prev => {
-                  const images = data.bungalows.images || [];
-                  return prev < images.length - 1 ? prev + 1 : 0;
-                })}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-              <div className="flex justify-center mt-4 space-x-2">
-                {(data.bungalows.images || []).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentImageIndex ? 'bg-gray-800' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="text-4xl font-light mb-6">
-                {data.bungalows.title || "Bungalows"}
-              </h3>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                {data.bungalows.description || `Discover our variety of sleeping options for visitors on or off of Malibu, from our oceanfront property to our 
-                inland courtyard. Choose one that works for you and your party's needs. Located in different 
-                areas of the world's bungalows with a private view of the world and the Pacific. 
-                Mixed with vine wine along the path and tasting, combined with different moments and 
-                nights spent dancing on the Malibu Shore. Mostly visits made on the Malibu.`}
-              </p>
-              <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
-                {data.bungalows.ctaText || "EXPLORE BUNGALOWS"}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Locations Section - FIXED */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6">
@@ -437,9 +351,9 @@ export default function HomePage() {
             {/* West LA */}
             <div className="group cursor-pointer">
               <img 
-                src="https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=600&h=400&fit=crop"
+                src={data.locations?.westLA?.image || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&h=400&fit=crop"}
                 alt="West LA location"
-                className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
+                className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
               />
               <div className="text-center">
                 <h4 className="text-2xl font-light mb-4">{data.locations?.westLA?.title || "West LA"}</h4>
@@ -455,9 +369,9 @@ export default function HomePage() {
             {/* Malibu */}
             <div className="group cursor-pointer">
               <img 
-                src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
+                src={data.locations?.malibu?.image || "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"}
                 alt="Malibu location"
-                className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
+                className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
               />
               <div className="text-center">
                 <h4 className="text-2xl font-light mb-4">{data.locations?.malibu?.title || "Malibu"}</h4>
@@ -479,9 +393,9 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=600&h=600&fit=crop"
+                src={data.goldenHour?.image || "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=600&fit=crop"}
                 alt="Golden Hour dining"
-                className="w-full h-96 object-cover rounded-lg"
+                className="w-full h-96 object-cover"
               />
             </div>
             <div className="text-center">
@@ -498,73 +412,6 @@ export default function HomePage() {
                 <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
                   {data.goldenHour?.ctaText || "VISIT CARAVAN"}
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Amenities Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h3 className="text-4xl font-light mb-6">
-                {data.amenities.title || "Amenities"}
-              </h3>
-              <p className="text-2xl font-light mb-8 text-gray-700">
-                {data.amenities.subtitle || "Everything you need and nothing you don't"}
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                {(data.amenities.list || []).map((amenity, index) => (
-                  <div key={index} className="flex items-center">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-4"></div>
-                    <span className="text-gray-600">
-                      {typeof amenity === 'string' ? amenity : amenity.fields?.name || amenity.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              
-              <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
-                {data.amenities.ctaText || "EXPLORE AMENITIES"}
-              </button>
-            </div>
-            <div className="relative">
-              <img 
-                src={data.amenities.images?.[currentAmenityIndex] || 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop'}
-                alt="Amenities"
-                className="w-full h-96 object-cover rounded-lg"
-              />
-              <button 
-                onClick={() => setCurrentAmenityIndex(prev => {
-                  const images = data.amenities.images || [];
-                  return prev > 0 ? prev - 1 : images.length - 1;
-                })}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button 
-                onClick={() => setCurrentAmenityIndex(prev => {
-                  const images = data.amenities.images || [];
-                  return prev < images.length - 1 ? prev + 1 : 0;
-                })}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-              <div className="flex justify-center mt-4 space-x-2">
-                {(data.amenities.images || []).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentAmenityIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentAmenityIndex ? 'bg-gray-800' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
               </div>
             </div>
           </div>
@@ -617,7 +464,7 @@ export default function HomePage() {
                 <img 
                   src={post.image || post.fields?.image || post.fields?.featuredImage || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop'}
                   alt={post.title || post.fields?.title}
-                  className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
+                  className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
                 />
                 <div className="text-xs text-gray-500 mb-2 tracking-wider">
                   {post.date || post.fields?.publishDate || "WEST LA | FEBRUARY 21, 2024"}
@@ -625,7 +472,7 @@ export default function HomePage() {
                 <h4 className="text-xl font-light leading-tight group-hover:text-gray-600 transition-colors">
                   {post.title || post.fields?.title || "Hotel June Experience"}
                 </h4>
-                <button className="mt-4 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
+                <button className="mt-4 text-sm font-medium border border-gray-900 text-gray-900 px-4 py-2 bg-transparent hover:bg-gray-900 hover:text-white transition-colors">
                   READ MORE
                 </button>
               </div>
@@ -641,7 +488,7 @@ export default function HomePage() {
           
           {/* FIXED: Converted to carousel with 5 actual images */}
           <div className="relative">
-            <div className="overflow-hidden rounded-lg">
+            <div className="overflow-hidden">
               <div 
                 className="flex transition-transform duration-500 ease-in-out"
                 style={{ transform: `translateX(-${currentSocialIndex * 20}%)` }}
@@ -660,7 +507,7 @@ export default function HomePage() {
                     <img 
                       src={image}
                       alt={`Hotel June moment ${index + 1}`}
-                      className="w-full aspect-square object-cover rounded-lg hover:opacity-90 transition-opacity cursor-pointer"
+                      className="w-full aspect-square object-cover hover:opacity-90 transition-opacity cursor-pointer"
                     />
                   </div>
                 ))}
