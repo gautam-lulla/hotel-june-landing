@@ -341,15 +341,15 @@ const HotelJuneLanding = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {data.locations.map((location, index) => (
-              <div key={index} className="bg-amber-50 overflow-hidden">
-                <div className="flex justify-center">
+              <div key={index} className="bg-amber-50">
+                <div className="image-container flex justify-center mb-4">
                   <img 
                     src={location.image}
                     alt={location.name}
                     className="w-[370px] h-[285px] object-cover"
                   />
                 </div>
-                <div className="p-8 bg-amber-50 text-center">
+                <div className="text-and-button-container text-center p-4">
                   <h4 className="text-2xl font-light mb-4 text-gray-900">{location.name}</h4>
                   <p className="text-gray-600 leading-relaxed mb-6">
                     {location.description}
@@ -364,44 +364,26 @@ const HotelJuneLanding = () => {
         </div>
       </section>
 
-      {/* Pool/Golden Hour Section with Carousel */}
+      {/* Pool/Golden Hour Section with 3 Images */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="relative">
+            <div className="grid grid-cols-3 gap-4">
               <img 
-                src={data.poolSection.images[poolImageIndex]}
-                alt="Pool and amenities"
-                className="w-[394px] h-[514px] object-cover"
+                src={data.poolSection.images[0]}
+                alt="Golden Hour 1"
+                className="w-[292px] h-[510px] object-cover"
               />
-              
-              {/* Pool Carousel Controls */}
-              <button 
-                onClick={() => setPoolImageIndex(prev => prev > 0 ? prev - 1 : data.poolSection.images.length - 1)}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
-              </button>
-              
-              <button 
-                onClick={() => setPoolImageIndex(prev => prev < data.poolSection.images.length - 1 ? prev + 1 : 0)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-700" />
-              </button>
-
-              {/* Pool Carousel Dots */}
-              <div className="flex justify-center mt-4 space-x-2">
-                {data.poolSection.images.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setPoolImageIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      index === poolImageIndex ? 'bg-gray-800' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
+              <img 
+                src={data.poolSection.images[1] || "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=292&h=510&fit=crop"}
+                alt="Golden Hour 2"
+                className="w-[292px] h-[510px] object-cover"
+              />
+              <img 
+                src={data.poolSection.images[2] || "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=292&h=510&fit=crop"}
+                alt="Golden Hour 3"
+                className="w-[292px] h-[510px] object-cover"
+              />
             </div>
             
             <div className="text-center">
