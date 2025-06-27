@@ -424,25 +424,25 @@ export default function HomePage() {
       </section>
 
       {/* In the Press Section */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h3 className="text-4xl font-light mb-4">In the Press</h3>
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-light">In the Press</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {(data.pressFeatures || []).map((feature, index) => (
-              <div key={index} className="group cursor-pointer">
-                <div className="relative mb-4">
-                  <img 
-                    src={feature.thumbnail || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100&h=100&fit=crop'}
-                    alt={feature.publication}
-                    className="w-16 h-16 object-cover rounded-lg mb-4 mx-auto"
-                  />
-                  <div className="bg-white p-6 rounded-lg shadow-lg">
-                    <h4 className="text-xl font-light mb-2">"{feature.title}"</h4>
-                    <p className="text-gray-600 text-sm mb-4">{feature.publication}</p>
-                    <button className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
+              <div key={index} className="text-center">
+                <img 
+                  src={feature.thumbnail || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100&h=100&fit=crop'}
+                  alt={feature.publication}
+                  className="w-12 h-12 object-cover mb-4 mx-auto"
+                />
+                <div className="bg-gray-100 p-4 text-center">
+                  <h4 className="text-lg font-light mb-2 text-center">"{feature.title}"</h4>
+                  <p className="text-gray-600 text-xs mb-3 text-center">{feature.publication}</p>
+                  <div className="text-center">
+                    <button className="text-xs font-medium border border-gray-900 text-gray-900 px-3 py-1 bg-transparent hover:bg-gray-900 hover:text-white transition-colors">
                       READ MORE
                     </button>
                   </div>
