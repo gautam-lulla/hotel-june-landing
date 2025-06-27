@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, MapPin, Calendar, Users } from 'lucide-react
 // Contentful client setup
 const createContentfulClient = () => {
   // Safe environment variable checking that works in all environments
-  const getEnvVar = (key) => {
+  const getEnvVar = (key: string) => {
     try {
       return process?.env?.[key] || null;
     } catch {
