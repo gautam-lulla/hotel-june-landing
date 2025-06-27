@@ -59,10 +59,10 @@ const createContentfulClient = () => {
 };
 
 const HotelJuneLanding = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [currentAmenityIndex, setCurrentAmenityIndex] = useState(0);
+  const [heroImageIndex, setHeroImageIndex] = useState(0);
+  const [poolImageIndex, setPoolImageIndex] = useState(0);
   const [pageData, setPageData] = useState(null);
-  const [loading, setLoading] = useState(false); // Start with false for demo
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const client = createContentfulClient();
@@ -70,7 +70,6 @@ const HotelJuneLanding = () => {
   // Fetch data from Contentful
   useEffect(() => {
     const fetchData = async () => {
-      // Safe environment check that works in all environments
       const getEnvVar = (key) => {
         try {
           return (typeof process !== 'undefined' && process?.env?.[key]) || null;
@@ -79,19 +78,17 @@ const HotelJuneLanding = () => {
         }
       };
       
-      // Check if we have API credentials first
       const hasCredentials = getEnvVar('REACT_APP_CONTENTFUL_SPACE_ID') && 
         getEnvVar('REACT_APP_CONTENTFUL_ACCESS_TOKEN');
       
       if (!hasCredentials) {
         console.log('🎨 Demo mode: Using beautiful fallback content');
-        return; // Skip loading, use fallback data
+        return;
       }
       
       try {
         setLoading(true);
         
-        // Fetch different content types
         const [
           hotelPageData,
           bungalowData, 
@@ -104,7 +101,6 @@ const HotelJuneLanding = () => {
           client.getEntries('journalPost')
         ]);
 
-        // Process and structure the data
         const processedData = {
           hero: hotelPageData?.items?.[0]?.fields || {},
           bungalows: bungalowData?.items || [],
@@ -124,19 +120,25 @@ const HotelJuneLanding = () => {
     fetchData();
   }, []);
 
-  // Fallback data matching the combined design exactly
+  // Fallback data with carousel images
   const fallbackData = {
     hero: {
       title: "Boutique Hotels in Malibu and West LA",
       subtitle: "Where It's Saturday Afternoon All Year Long",
-      heroImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&h=1080&fit=crop",
-      welcomeTitle: "Welcome to Hotel June",
-      welcomeDescription: "A boutique hotel brand offering unique experiences across California's most inspiring locations. Each Hotel June property celebrates the local culture, from Malibu's coastal charm to West LA's creative energy."
+      images: [
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&h=1080&fit=crop",
+        "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop",
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1920&h=1080&fit=crop"
+      ]
+    },
+    welcome: {
+      title: "Welcome to Hotel June",
+      description: "A collection of boutique hotels offering unique experiences across California's most inspiring locations. Each Hotel June property celebrates the local culture, from Malibu's coastal charm to West LA's creative energy."
     },
     locations: [
       {
         name: "West LA",
-        description: "Located in West Hollywood, offering easy access to Santa Monica and Venice. Hotel June West LA provides a stylish urban retreat.",
+        description: "Located in West Hollywood with easy access to Santa Monica and Venice. Hotel June West LA provides a stylish urban retreat.",
         image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop"
       },
       {
@@ -145,31 +147,29 @@ const HotelJuneLanding = () => {
         image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&h=400&fit=crop"
       }
     ],
-    caravanSection: {
+    poolSection: {
       title: "Golden Hour Starts Here",
       description: "Caravan Swim Club & bistro brings a taste of timeless French Riviera glamour with a California twist. Experience poolside dining and cocktails as the sun sets over Malibu.",
-      image: "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=800&h=600&fit=crop"
-    },
-    pressSection: {
-      title: "In The Press",
-      mentions: [
-        {
-          publication: "Travel + Leisure",
-          title: "The Best New Hotels in Los Angeles",
-          logo: "https://images.unsplash.com/photo-1586953983027-d7508a64f4bb?w=200&h=100&fit=crop"
-        },
-        {
-          publication: "Condé Nast Traveler", 
-          title: "The Best New Hotels: Gold List 2025",
-          logo: "https://images.unsplash.com/photo-1586953983027-d7508a64f4bb?w=200&h=100&fit=crop"
-        },
-        {
-          publication: "Wallpaper*",
-          title: "The Aura of Relaxed Beach Living",
-          logo: "https://images.unsplash.com/photo-1586953983027-d7508a64f4bb?w=200&h=100&fit=crop"
-        }
+      images: [
+        "https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=600&fit=crop"
       ]
     },
+    pressSection: [
+      {
+        publication: "Travel + Leisure",
+        title: "The Best New Hotels in Los Angeles"
+      },
+      {
+        publication: "Condé Nast Traveler", 
+        title: "The Best New Hotels: Gold List 2025"
+      },
+      {
+        publication: "Wallpaper*",
+        title: "The Aura of Relaxed Beach Living"
+      }
+    ],
     journalPosts: [
       {
         date: "WEST LA | FEBRUARY 21, 2025",
@@ -189,127 +189,155 @@ const HotelJuneLanding = () => {
     ]
   };
 
-  // Use Contentful data if available, otherwise fallback
   const data = pageData || fallbackData;
 
-  // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600 mx-auto mb-4"></div>
-          <p className="text-stone-600 font-light">Loading Hotel June experience...</p>
+          <p className="text-amber-800">Loading Hotel June experience...</p>
         </div>
       </div>
     );
   }
 
-  // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+      <div className="min-h-screen bg-amber-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4 font-light">Error loading content: {error}</p>
-          <p className="text-stone-600 font-light">Falling back to demo content...</p>
+          <p className="text-red-600 mb-4">Error loading content: {error}</p>
+          <p className="text-amber-800">Falling back to demo content...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen bg-amber-50">
       {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-50 p-6">
+      <header className="absolute top-0 left-0 right-0 z-50 p-4 md:p-6">
         <div className="flex justify-between items-center">
-          <div className="text-white font-light tracking-wider">
-            <div className="text-xl font-light">hotel june</div>
+          <div className="text-white">
+            <div className="text-lg md:text-xl">hotel june</div>
             <div className="text-xs opacity-75 tracking-widest">DESTINATIONS</div>
           </div>
-          <button className="text-white text-sm tracking-wider opacity-75 hover:opacity-100 font-light">
+          <button className="text-white text-sm opacity-75 hover:opacity-100">
             DESTINATIONS ▼
           </button>
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero Section with Carousel */}
       <section className="relative h-screen">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center transition-all duration-500"
           style={{
-            backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${data.hero.heroImage}')`
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('${data.hero.images[heroImageIndex]}')`
           }}
-        >
-        </div>
+        />
         
-        <div className="relative z-10 h-full flex flex-col justify-center items-center text-white text-center px-6">
-          <h1 className="text-4xl md:text-5xl font-light mb-4 tracking-wide">
-            {data.hero.title}
-          </h1>
-          <h2 className="text-6xl md:text-8xl font-light mb-16 leading-tight">
-            {data.hero.subtitle}
-          </h2>
-          
-          {/* Booking Widget */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-none p-6 flex flex-wrap items-center gap-6 text-black max-w-5xl w-full">
-            <div className="flex items-center text-left">
-              <MapPin className="w-5 h-5 mr-3 text-stone-600" />
-              <div>
-                <div className="text-xs font-medium text-stone-500 tracking-wider">SELECT LOCATION</div>
-                <div className="font-medium text-stone-900">Choose Location</div>
+        <div className="relative z-10 h-full flex flex-col justify-center text-white px-6">
+          <div className="max-w-6xl mx-auto w-full">
+            <h1 className="text-4xl md:text-6xl font-light mb-4 tracking-wide">
+              {data.hero.title}
+            </h1>
+            <h2 className="text-5xl md:text-8xl font-light mb-16 leading-tight">
+              {data.hero.subtitle}
+            </h2>
+            
+            {/* Booking Widget */}
+            <div className="bg-white text-black p-6 max-w-5xl">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                <div className="flex items-center">
+                  <MapPin className="w-5 h-5 mr-3 text-gray-600" />
+                  <div>
+                    <div className="text-xs text-gray-500 tracking-wider">SELECT LOCATION</div>
+                    <div className="font-medium">Choose Location</div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <Calendar className="w-5 h-5 mr-3 text-gray-600" />
+                  <div>
+                    <div className="text-xs text-gray-500 tracking-wider">ADD DATES</div>
+                    <div className="font-medium">Check availability</div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <Users className="w-5 h-5 mr-3 text-gray-600" />
+                  <div>
+                    <div className="text-xs text-gray-500 tracking-wider">TOTAL GUESTS</div>
+                    <div className="font-medium">2 guests</div>
+                  </div>
+                </div>
+                <button className="bg-amber-500 hover:bg-amber-600 text-black font-medium py-3 px-8">
+                  BOOK NOW
+                </button>
               </div>
             </div>
-            <div className="flex items-center text-left">
-              <Calendar className="w-5 h-5 mr-3 text-stone-600" />
-              <div>
-                <div className="text-xs font-medium text-stone-500 tracking-wider">ADD DATES</div>
-                <div className="font-medium text-stone-900">Check availability</div>
-              </div>
-            </div>
-            <div className="flex items-center text-left">
-              <Users className="w-5 h-5 mr-3 text-stone-600" />
-              <div>
-                <div className="text-xs font-medium text-stone-500 tracking-wider">TOTAL GUESTS</div>
-                <div className="font-medium text-stone-900">2 guests</div>
-              </div>
-            </div>
-            <button className="bg-amber-500 hover:bg-amber-600 text-black font-medium py-3 px-8 transition-colors tracking-wide">
-              BOOK NOW
-            </button>
           </div>
+        </div>
+
+        {/* Hero Carousel Controls */}
+        <button 
+          onClick={() => setHeroImageIndex(prev => prev > 0 ? prev - 1 : data.hero.images.length - 1)}
+          className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white/20 p-3 rounded-full hover:bg-white/30 z-20"
+        >
+          <ChevronLeft className="w-6 h-6 text-white" />
+        </button>
+        
+        <button 
+          onClick={() => setHeroImageIndex(prev => prev < data.hero.images.length - 1 ? prev + 1 : 0)}
+          className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-white/20 p-3 rounded-full hover:bg-white/30 z-20"
+        >
+          <ChevronRight className="w-6 h-6 text-white" />
+        </button>
+
+        {/* Hero Carousel Dots */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+          {data.hero.images.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setHeroImageIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === heroImageIndex ? 'bg-white' : 'bg-white/40'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
       {/* Welcome Section */}
       <section className="py-20 px-6 bg-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-light mb-8 text-stone-900">
-            {data.hero.welcomeTitle}
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-light mb-8 text-gray-900">
+            {data.welcome.title}
           </h2>
-          <p className="text-lg text-stone-600 leading-relaxed font-light max-w-3xl mx-auto">
-            {data.hero.welcomeDescription}
+          <p className="text-lg text-gray-600 leading-relaxed">
+            {data.welcome.description}
           </p>
         </div>
       </section>
 
       {/* Locations Section */}
-      <section className="py-20 bg-stone-50">
+      <section className="py-20 bg-amber-50">
         <div className="max-w-6xl mx-auto px-6">
-          <h3 className="text-4xl font-light text-center mb-16 text-stone-900">Locations</h3>
+          <h3 className="text-4xl font-light text-center mb-16 text-gray-900">Locations</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {data.locations.map((location, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-sm">
+              <div key={index} className="bg-white overflow-hidden">
                 <img 
                   src={location.image}
                   alt={location.name}
                   className="w-full h-64 object-cover"
                 />
                 <div className="p-8">
-                  <h4 className="text-2xl font-light mb-4 text-stone-900">{location.name}</h4>
-                  <p className="text-stone-600 leading-relaxed mb-6 font-light">
+                  <h4 className="text-2xl font-light mb-4 text-gray-900">{location.name}</h4>
+                  <p className="text-gray-600 leading-relaxed mb-6">
                     {location.description}
                   </p>
-                  <button className="bg-stone-900 text-white px-6 py-2 text-sm font-medium tracking-wide hover:bg-stone-800 transition-colors">
+                  <button className="bg-gray-900 text-white px-6 py-2 text-sm font-medium tracking-wide hover:bg-gray-800">
                     EXPLORE
                   </button>
                 </div>
@@ -319,46 +347,76 @@ const HotelJuneLanding = () => {
         </div>
       </section>
 
-      {/* Caravan/Golden Hour Section */}
+      {/* Pool/Golden Hour Section with Carousel */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="w-16 h-16 bg-stone-200 rounded-full mb-8 flex items-center justify-center">
-                <div className="text-stone-600 font-light text-xs">LOGO</div>
+              {/* Simulated Logo */}
+              <div className="w-16 h-16 bg-amber-100 rounded-full mb-8 flex items-center justify-center">
+                <div className="text-amber-600 font-bold text-sm">HJ</div>
               </div>
-              <h3 className="text-4xl font-light mb-6 text-stone-900">
-                {data.caravanSection.title}
+              
+              <h3 className="text-4xl font-light mb-6 text-gray-900">
+                {data.poolSection.title}
               </h3>
-              <p className="text-stone-600 leading-relaxed mb-8 font-light">
-                {data.caravanSection.description}
+              <p className="text-gray-600 leading-relaxed mb-8">
+                {data.poolSection.description}
               </p>
-              <button className="bg-amber-500 text-black px-8 py-3 font-medium tracking-wide hover:bg-amber-600 transition-colors">
+              <button className="bg-amber-500 text-black px-8 py-3 font-medium tracking-wide hover:bg-amber-600">
                 VISIT CARAVAN
               </button>
             </div>
             
-            <div>
+            <div className="relative">
               <img 
-                src={data.caravanSection.image}
-                alt="Caravan Swim Club"
-                className="w-full h-96 object-cover rounded-lg"
+                src={data.poolSection.images[poolImageIndex]}
+                alt="Pool and amenities"
+                className="w-full h-96 object-cover"
               />
+              
+              {/* Pool Carousel Controls */}
+              <button 
+                onClick={() => setPoolImageIndex(prev => prev > 0 ? prev - 1 : data.poolSection.images.length - 1)}
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
+              >
+                <ChevronLeft className="w-5 h-5 text-gray-700" />
+              </button>
+              
+              <button 
+                onClick={() => setPoolImageIndex(prev => prev < data.poolSection.images.length - 1 ? prev + 1 : 0)}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white"
+              >
+                <ChevronRight className="w-5 h-5 text-gray-700" />
+              </button>
+
+              {/* Pool Carousel Dots */}
+              <div className="flex justify-center mt-4 space-x-2">
+                {data.poolSection.images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setPoolImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === poolImageIndex ? 'bg-gray-800' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* In The Press Section */}
-      <section className="py-20 bg-stone-900 text-white">
+      <section className="py-20 bg-gray-900 text-white">
         <div className="max-w-6xl mx-auto px-6">
           <h3 className="text-4xl font-light text-center mb-16">In The Press</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {data.pressSection.mentions.map((mention, index) => (
+            {data.pressSection.map((mention, index) => (
               <div key={index} className="text-center">
-                <div className="bg-white/10 h-20 rounded mb-6 flex items-center justify-center">
-                  <span className="text-white/60 text-sm font-light">{mention.publication}</span>
+                <div className="bg-white/10 h-20 mb-6 flex items-center justify-center">
+                  <span className="text-white/60 text-sm">{mention.publication}</span>
                 </div>
                 <h4 className="text-xl font-light leading-tight">
                   "{mention.title}"
@@ -373,8 +431,8 @@ const HotelJuneLanding = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h3 className="text-4xl font-light mb-4 text-stone-900">June Journal</h3>
-            <p className="text-stone-600 font-light">
+            <h3 className="text-4xl font-light mb-4 text-gray-900">June Journal</h3>
+            <p className="text-gray-600">
               Feast the June — what's inspiring us right now, from local art to the music to neighborhood discoveries and everything in between.
             </p>
           </div>
@@ -387,13 +445,13 @@ const HotelJuneLanding = () => {
                   alt={post.title}
                   className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
                 />
-                <div className="text-xs text-stone-500 mb-2 tracking-wider font-medium">
+                <div className="text-xs text-gray-500 mb-2 tracking-wider">
                   {post.date}
                 </div>
-                <h4 className="text-xl font-light leading-tight group-hover:text-stone-600 transition-colors text-stone-900 mb-4">
+                <h4 className="text-xl font-light leading-tight group-hover:text-gray-600 transition-colors text-gray-900 mb-4">
                   {post.title}
                 </h4>
-                <button className="text-sm font-medium text-stone-900 hover:text-stone-600 transition-colors tracking-wide">
+                <button className="text-sm font-medium text-gray-900 hover:text-gray-600 tracking-wide">
                   READ MORE
                 </button>
               </div>
@@ -403,9 +461,9 @@ const HotelJuneLanding = () => {
       </section>
 
       {/* Social Media Section */}
-      <section className="py-16 bg-stone-50">
+      <section className="py-16 bg-amber-50">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h4 className="text-2xl font-light mb-8 text-stone-900">Follow us @hoteljunemalibu and @hoteljunewestla</h4>
+          <h4 className="text-2xl font-light mb-8 text-gray-900">Follow us @hoteljunemalibu and @hoteljunewestla</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1,2,3,4].map((i) => (
               <div key={i} className="aspect-square bg-amber-400 hover:bg-amber-500 transition-colors cursor-pointer"></div>
@@ -415,16 +473,16 @@ const HotelJuneLanding = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-stone-100">
+      <section className="py-16 bg-gray-100">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <h4 className="text-2xl font-light mb-8 text-stone-900">Be the first to know everything about Hotel June.</h4>
+          <h4 className="text-2xl font-light mb-8 text-gray-900">Be the first to know everything about Hotel June.</h4>
           <div className="flex gap-4">
             <input 
               type="email" 
               placeholder="Email Address"
-              className="flex-1 px-4 py-3 border border-stone-300 focus:outline-none focus:border-stone-500 font-light"
+              className="flex-1 px-4 py-3 border border-gray-300 focus:outline-none focus:border-gray-500"
             />
-            <button className="bg-amber-500 hover:bg-amber-600 text-black px-8 py-3 font-medium transition-colors tracking-wide">
+            <button className="bg-amber-500 hover:bg-amber-600 text-black px-8 py-3 font-medium tracking-wide">
               Subscribe
             </button>
           </div>
@@ -436,34 +494,34 @@ const HotelJuneLanding = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h5 className="font-light text-stone-900 text-lg mb-4">hotel june</h5>
+              <h5 className="font-light text-gray-900 text-lg mb-4">hotel june</h5>
             </div>
             <div>
-              <h6 className="font-medium mb-4 text-sm tracking-wider text-stone-700">HOTELS</h6>
-              <div className="space-y-2 text-sm text-stone-600 font-light">
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">CONTACT</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">CAREERS</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">PRESS</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">GIFT CARDS</div>
+              <h6 className="font-medium mb-4 text-sm tracking-wider text-gray-700">HOTELS</h6>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="hover:text-gray-900 cursor-pointer">CONTACT</div>
+                <div className="hover:text-gray-900 cursor-pointer">CAREERS</div>
+                <div className="hover:text-gray-900 cursor-pointer">PRESS</div>
+                <div className="hover:text-gray-900 cursor-pointer">GIFT CARDS</div>
               </div>
             </div>
             <div>
-              <h6 className="font-medium mb-4 text-sm tracking-wider text-stone-700">ADVENTURES</h6>
-              <div className="space-y-2 text-sm text-stone-600 font-light">
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">TERMS OF USE</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">PRIVACY POLICY</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">ACCESSIBILITY</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">SELECT LANGUAGE</div>
+              <h6 className="font-medium mb-4 text-sm tracking-wider text-gray-700">ADVENTURES</h6>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="hover:text-gray-900 cursor-pointer">TERMS OF USE</div>
+                <div className="hover:text-gray-900 cursor-pointer">PRIVACY POLICY</div>
+                <div className="hover:text-gray-900 cursor-pointer">ACCESSIBILITY</div>
+                <div className="hover:text-gray-900 cursor-pointer">SELECT LANGUAGE</div>
               </div>
             </div>
             <div>
-              <div className="text-sm text-stone-600 font-light mb-4">
+              <div className="text-sm text-gray-600 mb-4">
                 A Proper Hospitality Hotel
               </div>
-              <div className="space-y-1 text-sm text-stone-600 font-light">
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">PROPER HOTELS</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">HOTEL JUNE</div>
-                <div className="hover:text-stone-900 cursor-pointer transition-colors">THE COLLECTION</div>
+              <div className="space-y-1 text-sm text-gray-600">
+                <div className="hover:text-gray-900 cursor-pointer">PROPER HOTELS</div>
+                <div className="hover:text-gray-900 cursor-pointer">HOTEL JUNE</div>
+                <div className="hover:text-gray-900 cursor-pointer">THE COLLECTION</div>
               </div>
             </div>
           </div>
