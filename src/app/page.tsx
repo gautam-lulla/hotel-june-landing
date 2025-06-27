@@ -188,8 +188,8 @@ const HotelJuneLanding = () => {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading Hotel June experience...</p>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-stone-900 mx-auto mb-4"></div>
+          <p className="text-stone-600 font-light">Loading Hotel June experience...</p>
         </div>
       </div>
     );
@@ -200,8 +200,8 @@ const HotelJuneLanding = () => {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Error loading content: {error}</p>
-          <p className="text-gray-600">Falling back to demo content...</p>
+          <p className="text-red-600 mb-4 font-light">Error loading content: {error}</p>
+          <p className="text-stone-600 font-light">Falling back to demo content...</p>
         </div>
       </div>
     );
@@ -213,10 +213,10 @@ const HotelJuneLanding = () => {
       <header className="absolute top-0 left-0 right-0 z-50 p-6">
         <div className="flex justify-between items-center">
           <div className="text-white font-light tracking-wider">
-            <div className="text-xl">hotel june</div>
-            <div className="text-xs opacity-75">MALIBU</div>
+            <div className="text-xl font-light">hotel june</div>
+            <div className="text-xs opacity-75 tracking-widest">MALIBU</div>
           </div>
-          <button className="text-white text-sm tracking-wider opacity-75 hover:opacity-100">
+          <button className="text-white text-sm tracking-wider opacity-75 hover:opacity-100 font-light">
             DESTINATIONS ▼
           </button>
         </div>
@@ -238,7 +238,7 @@ const HotelJuneLanding = () => {
               </span>
             )) || "Your Private Malibu Retreat"}
           </h1>
-          <p className="text-xl mb-12 opacity-90 max-w-2xl mx-auto">
+          <p className="text-xl mb-12 opacity-90 max-w-2xl mx-auto font-light">
             {data.hero.subtitle || "Nestled Into Four Lush Acres on PCH"}
           </p>
           
@@ -248,25 +248,25 @@ const HotelJuneLanding = () => {
               <div className="flex items-center text-left">
                 <MapPin className="w-5 h-5 mr-3" />
                 <div>
-                  <div className="text-xs opacity-75">SELECT LOCATION</div>
+                  <div className="text-xs opacity-75 tracking-wider font-medium">SELECT LOCATION</div>
                   <div className="font-medium">Malibu</div>
                 </div>
               </div>
               <div className="flex items-center text-left">
                 <Calendar className="w-5 h-5 mr-3" />
                 <div>
-                  <div className="text-xs opacity-75">ADD DATES</div>
+                  <div className="text-xs opacity-75 tracking-wider font-medium">ADD DATES</div>
                   <div className="font-medium">Check availability</div>
                 </div>
               </div>
               <div className="flex items-center text-left">
                 <Users className="w-5 h-5 mr-3" />
                 <div>
-                  <div className="text-xs opacity-75">TOTAL GUESTS</div>
+                  <div className="text-xs opacity-75 tracking-wider font-medium">TOTAL GUESTS</div>
                   <div className="font-medium">2 guests</div>
                 </div>
               </div>
-              <button className="bg-orange-400 hover:bg-orange-500 text-black font-medium py-3 px-8 rounded transition-colors">
+              <button className="bg-amber-500 hover:bg-amber-600 text-black font-medium py-3 px-8 rounded-md transition-colors tracking-wide">
                 BOOK NOW
               </button>
             </div>
@@ -277,10 +277,10 @@ const HotelJuneLanding = () => {
       {/* Welcome Section */}
       <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-light mb-8 text-center">
+          <h2 className="text-4xl font-light mb-8 text-center text-stone-900">
             {data.hero.welcomeTitle || "Welcome to Hotel June Malibu"}
           </h2>
-          <p className="text-lg text-gray-600 leading-relaxed max-w-4xl mx-auto text-center">
+          <p className="text-lg text-stone-600 leading-relaxed max-w-4xl mx-auto text-center font-light">
             {data.hero.welcomeDescription || `Hotel June Malibu is a unique retreat space for intimate gatherings, corporate offsites, and personal getaways in a 
             sprawling wellness, meditation, and artistic center nestled into four lush acres overlooking the Pacific. When we 
             say it's a place for intimate thought, we mean that we host gatherings, executive get-togethers, wellness group 
@@ -291,7 +291,7 @@ const HotelJuneLanding = () => {
       </section>
 
       {/* Bungalows Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-stone-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
@@ -305,18 +305,18 @@ const HotelJuneLanding = () => {
                   const images = data.bungalows.images || [];
                   return prev > 0 ? prev - 1 : images.length - 1;
                 })}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 p-2 rounded-full hover:bg-white transition-colors shadow-lg"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 text-stone-700" />
               </button>
               <button 
                 onClick={() => setCurrentImageIndex(prev => {
                   const images = data.bungalows.images || [];
                   return prev < images.length - 1 ? prev + 1 : 0;
                 })}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 p-2 rounded-full hover:bg-white transition-colors shadow-lg"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-5 h-5 text-stone-700" />
               </button>
               <div className="flex justify-center mt-4 space-x-2">
                 {(data.bungalows.images || []).map((_, index) => (
@@ -324,24 +324,24 @@ const HotelJuneLanding = () => {
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
                     className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentImageIndex ? 'bg-gray-800' : 'bg-gray-300'
+                      index === currentImageIndex ? 'bg-stone-800' : 'bg-stone-300'
                     }`}
                   />
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="text-4xl font-light mb-6">
+              <h3 className="text-4xl font-light mb-6 text-stone-900">
                 {data.bungalows.title || "Bungalows"}
               </h3>
-              <p className="text-gray-600 leading-relaxed mb-6">
+              <p className="text-stone-600 leading-relaxed mb-6 font-light">
                 {data.bungalows.description || `Discover our variety of sleeping options for visitors on or off of Malibu, from our oceanfront property to our 
                 inland courtyard. Choose one that works for you and your party's needs. Located in different 
                 areas of the world's bungalows with a private view of the world and the Pacific. 
                 Mixed with vine wine along the path and tasting, combined with different moments and 
                 nights spent dancing on the Malibu Shore. Mostly visits made on the Malibu.`}
               </p>
-              <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
+              <button className="bg-stone-900 text-white px-8 py-3 rounded-md hover:bg-stone-800 transition-colors font-medium tracking-wide">
                 {data.bungalows.ctaText || "EXPLORE BUNGALOWS"}
               </button>
             </div>
@@ -354,8 +354,8 @@ const HotelJuneLanding = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h3 className="text-4xl font-light mb-6">Malibu: A True Local Experience</h3>
-              <p className="text-gray-600 leading-relaxed mb-6">
+              <h3 className="text-4xl font-light mb-6 text-stone-900">Malibu: A True Local Experience</h3>
+              <p className="text-stone-600 leading-relaxed mb-6 font-light">
                 Discover an entirely new way to experience Malibu, one of Southern California's most iconic and inspiring destinations.
               </p>
               <div className="grid grid-cols-2 gap-4">
@@ -370,12 +370,12 @@ const HotelJuneLanding = () => {
                   className="w-full h-48 object-cover rounded-lg"
                 />
               </div>
-              <p className="text-sm text-gray-500 mt-4">
+              <p className="text-sm text-stone-500 mt-4 font-light">
                 The glory of Malibu is unparalleled — a community centered around some of the world's most beautiful beaches, 
                 surrounded by nature and filled with endless opportunities for adventure. Point Dume, and Surfrider Beach, one of the hottest 
                 surfing and nightlife spots, one of the hottest surfing spots in Malibu's shoreline route along of our coast, natural and free locations.
               </p>
-              <button className="mt-6 border border-gray-900 text-gray-900 px-8 py-3 rounded hover:bg-gray-900 hover:text-white transition-colors">
+              <button className="mt-6 border border-stone-900 text-stone-900 px-8 py-3 rounded-md hover:bg-stone-900 hover:text-white transition-colors font-medium tracking-wide">
                 LEARN MORE
               </button>
             </div>
@@ -391,29 +391,29 @@ const HotelJuneLanding = () => {
       </section>
 
       {/* Amenities Section */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-stone-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h3 className="text-4xl font-light mb-6">
+              <h3 className="text-4xl font-light mb-6 text-stone-900">
                 {data.amenities.title || "Amenities"}
               </h3>
-              <p className="text-2xl font-light mb-8 text-gray-700">
+              <p className="text-2xl font-light mb-8 text-stone-700">
                 {data.amenities.subtitle || "Everything you need and nothing you don't"}
               </p>
               
               <div className="space-y-4 mb-8">
                 {(data.amenities.list || []).map((amenity, index) => (
                   <div key={index} className="flex items-center">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-4"></div>
-                    <span className="text-gray-600">
+                    <div className="w-2 h-2 bg-stone-400 rounded-full mr-4"></div>
+                    <span className="text-stone-600 font-light">
                       {typeof amenity === 'string' ? amenity : amenity.fields?.name || amenity.name}
                     </span>
                   </div>
                 ))}
               </div>
               
-              <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
+              <button className="bg-stone-900 text-white px-8 py-3 rounded-md hover:bg-stone-800 transition-colors font-medium tracking-wide">
                 {data.amenities.ctaText || "EXPLORE AMENITIES"}
               </button>
             </div>
@@ -428,18 +428,18 @@ const HotelJuneLanding = () => {
                   const images = data.amenities.images || [];
                   return prev > 0 ? prev - 1 : images.length - 1;
                 })}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 p-2 rounded-full hover:bg-white transition-colors shadow-lg"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-5 h-5 text-stone-700" />
               </button>
               <button 
                 onClick={() => setCurrentAmenityIndex(prev => {
                   const images = data.amenities.images || [];
                   return prev < images.length - 1 ? prev + 1 : 0;
                 })}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 p-2 rounded-full hover:bg-white transition-colors shadow-lg"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-5 h-5 text-stone-700" />
               </button>
               <div className="flex justify-center mt-4 space-x-2">
                 {(data.amenities.images || []).map((_, index) => (
@@ -447,7 +447,7 @@ const HotelJuneLanding = () => {
                     key={index}
                     onClick={() => setCurrentAmenityIndex(index)}
                     className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentAmenityIndex ? 'bg-gray-800' : 'bg-gray-300'
+                      index === currentAmenityIndex ? 'bg-stone-800' : 'bg-stone-300'
                     }`}
                   />
                 ))}
@@ -461,8 +461,8 @@ const HotelJuneLanding = () => {
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h3 className="text-4xl font-light mb-4">June Journal</h3>
-            <p className="text-gray-600">
+            <h3 className="text-4xl font-light mb-4 text-stone-900">June Journal</h3>
+            <p className="text-stone-600 font-light">
               Feast the June — what's inspiring us right now, from local art to the music to neighborhood discoveries and everything in between.
             </p>
           </div>
@@ -475,13 +475,13 @@ const HotelJuneLanding = () => {
                   alt={post.title || post.fields?.title}
                   className="w-full h-64 object-cover rounded-lg mb-4 group-hover:opacity-90 transition-opacity"
                 />
-                <div className="text-xs text-gray-500 mb-2 tracking-wider">
+                <div className="text-xs text-stone-500 mb-2 tracking-wider font-medium">
                   {post.date || post.fields?.publishDate || "MALIBU | FEBRUARY 21, 2025"}
                 </div>
-                <h4 className="text-xl font-light leading-tight group-hover:text-gray-600 transition-colors">
+                <h4 className="text-xl font-light leading-tight group-hover:text-stone-600 transition-colors text-stone-900">
                   {post.title || post.fields?.title || "Hotel June Experience"}
                 </h4>
-                <button className="mt-4 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">
+                <button className="mt-4 text-sm font-medium text-stone-900 hover:text-stone-600 transition-colors tracking-wide">
                   READ MORE
                 </button>
               </div>
@@ -491,28 +491,28 @@ const HotelJuneLanding = () => {
       </section>
 
       {/* Social Media Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-stone-50">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h4 className="text-2xl font-light mb-8">Follow us @hoteljunemalibu and @hoteljunewestla</h4>
+          <h4 className="text-2xl font-light mb-8 text-stone-900">Follow us @hoteljunemalibu and @hoteljunewestla</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1,2,3,4].map((i) => (
-              <div key={i} className="aspect-square bg-yellow-400 rounded-lg"></div>
+              <div key={i} className="aspect-square bg-amber-400 rounded-lg hover:bg-amber-500 transition-colors cursor-pointer"></div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-stone-100">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <h4 className="text-2xl font-light mb-8">Be the first to know everything about Hotel June.</h4>
+          <h4 className="text-2xl font-light mb-8 text-stone-900">Be the first to know everything about Hotel June.</h4>
           <div className="flex gap-4">
             <input 
               type="email" 
               placeholder="Email Address"
-              className="flex-1 px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-gray-500"
+              className="flex-1 px-4 py-3 border border-stone-300 rounded-md focus:outline-none focus:border-stone-500 font-light"
             />
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-8 py-3 rounded font-medium transition-colors">
+            <button className="bg-amber-500 hover:bg-amber-600 text-black px-8 py-3 rounded-md font-medium transition-colors tracking-wide">
               Subscribe
             </button>
           </div>
@@ -524,34 +524,34 @@ const HotelJuneLanding = () => {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h5 className="font-medium mb-4">hotel june</h5>
+              <h5 className="font-light mb-4 text-stone-900 text-lg">hotel june</h5>
             </div>
             <div>
-              <h6 className="font-medium mb-4 text-sm">HOTELS</h6>
-              <div className="space-y-2 text-sm text-gray-600">
-                <div>CONTACT</div>
-                <div>CAREERS</div>
-                <div>PRESS</div>
-                <div>GIFT CARDS</div>
+              <h6 className="font-medium mb-4 text-sm tracking-wider text-stone-700">HOTELS</h6>
+              <div className="space-y-2 text-sm text-stone-600 font-light">
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">CONTACT</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">CAREERS</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">PRESS</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">GIFT CARDS</div>
               </div>
             </div>
             <div>
-              <h6 className="font-medium mb-4 text-sm">ADVENTURES</h6>
-              <div className="space-y-2 text-sm text-gray-600">
-                <div>TERMS OF USE</div>
-                <div>PRIVACY POLICY</div>
-                <div>ACCESSIBILITY</div>
-                <div>SELECT LANGUAGE</div>
+              <h6 className="font-medium mb-4 text-sm tracking-wider text-stone-700">ADVENTURES</h6>
+              <div className="space-y-2 text-sm text-stone-600 font-light">
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">TERMS OF USE</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">PRIVACY POLICY</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">ACCESSIBILITY</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">SELECT LANGUAGE</div>
               </div>
             </div>
             <div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-stone-600 font-light mb-4">
                 A Proper Hospitality Hotel
               </div>
-              <div className="mt-4 space-y-1 text-sm text-gray-600">
-                <div>PROPER HOTELS</div>
-                <div>HOTEL JUNE</div>
-                <div>THE COLLECTION</div>
+              <div className="space-y-1 text-sm text-stone-600 font-light">
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">PROPER HOTELS</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">HOTEL JUNE</div>
+                <div className="hover:text-stone-900 cursor-pointer transition-colors">THE COLLECTION</div>
               </div>
             </div>
           </div>
