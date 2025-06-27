@@ -341,7 +341,7 @@ const HotelJuneLanding = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {data.locations.map((location, index) => (
-              <div key={index} className="bg-white overflow-hidden">
+              <div key={index} className="bg-amber-50 overflow-hidden">
                 <img 
                   src={location.image}
                   alt={location.name}
