@@ -229,7 +229,7 @@ const HotelJuneLanding = () => {
       </header>
 
       {/* Hero Section with Carousel */}
-      <section className="relative h-screen">
+      <section className="relative h-96 md:h-[500px]">
         <div 
           className="absolute inset-0 bg-cover bg-center transition-all duration-500"
           style={{
@@ -324,13 +324,13 @@ const HotelJuneLanding = () => {
         <div className="max-w-6xl mx-auto px-6">
           <h3 className="text-4xl font-light text-center mb-16 text-gray-900">Locations</h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             {data.locations.map((location, index) => (
               <div key={index} className="bg-white overflow-hidden">
                 <img 
                   src={location.image}
                   alt={location.name}
-                  className="w-full h-64 object-cover"
+                  className="w-[370px] h-[285px] object-cover"
                 />
                 <div className="p-8">
                   <h4 className="text-2xl font-light mb-4 text-gray-900">{location.name}</h4>
