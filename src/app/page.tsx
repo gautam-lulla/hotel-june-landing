@@ -423,8 +423,14 @@ const HotelJuneLanding = () => {
       </section>
 
       {/* In The Press Section */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="max-w-6xl mx-auto px-6">
+      <section className="py-20 relative">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=800&fit=crop')`
+          }}
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-6 text-white">
           <h3 className="text-4xl font-light text-center mb-16">In The Press</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
