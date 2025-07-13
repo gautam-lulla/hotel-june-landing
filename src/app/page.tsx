@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, MapPin, Calendar, Users, Menu } from 'lucide-react';
 
-// Contentful client setup (same as before)
+// Contentful client setup (keeping existing logic)
 const createClient = () => {
   const getEnvVar = (key: string) => {
     try {
@@ -46,7 +46,7 @@ export default function HomePage() {
   const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Enhanced fallback data matching Figma specs
+  // Enhanced fallback data
   const fallbackData = {
     hero: {
       title: "Where It's Saturday\nAfternoon All Year Long",
@@ -158,12 +158,11 @@ export default function HomePage() {
   const data = pageData || fallbackData;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#fff7e9' }}>
-      {/* Hero Section - Following Figma Specs */}
+    <div className="min-h-screen bg-cream">
+      {/* Hero Section - Using Design System Classes */}
       <section 
-        className="relative flex flex-col text-white text-center min-h-screen"
+        className="hero-background relative flex flex-col text-white text-center min-h-screen"
         style={{
-          backgroundColor: '#ebd8cc',
           backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${data.hero.heroImage}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
@@ -171,7 +170,7 @@ export default function HomePage() {
       >
         
         {/* Navigation Bar - Exact Figma Positioning */}
-        <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between" style={{ padding: '60px' }}>
+        <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between padding-hero">
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-white hover:text-gray-300 transition-colors"
@@ -179,24 +178,12 @@ export default function HomePage() {
             <Menu className="w-6 h-6" />
           </button>
           
-          <div className="absolute left-1/2 transform -translate-x-1/2 text-white" 
-               style={{ 
-                 fontFamily: 'var(--font-inter)',
-                 fontSize: '18px',
-                 fontWeight: 500,
-                 letterSpacing: '0.9px'
-               }}>
+          <div className="absolute left-1/2 transform -translate-x-1/2 text-white button-text">
             hotel june
           </div>
           
           <div className="relative">
-            <button className="text-white hover:text-gray-300 transition-colors flex items-center"
-                    style={{
-                      fontFamily: 'var(--font-inter)',
-                      fontSize: '18px',
-                      fontWeight: 500,
-                      letterSpacing: '0.9px'
-                    }}>
+            <button className="text-white hover:text-gray-300 transition-colors flex items-center button-text">
               Destinations ▼
             </button>
           </div>
@@ -215,27 +202,13 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Hero Content - Exact Typography from Figma */}
-        <div className="flex-1 flex items-center justify-center" style={{ padding: '60px' }}>
+        {/* Hero Content - Using Design System Typography */}
+        <div className="flex-1 flex items-center justify-center padding-hero">
           <div className="max-w-4xl px-6">
-            <p className="mb-6 text-white"
-               style={{
-                 fontFamily: 'var(--font-inter)',
-                 fontSize: '36px',
-                 fontWeight: 500,
-                 lineHeight: '42px',
-                 letterSpacing: '0.72px'
-               }}>
+            <p className="hero-subtitle mb-6">
               {data.hero.subtitle}
             </p>
-            <h1 className="text-white mb-12 leading-tight"
-                style={{
-                  fontFamily: 'var(--font-inter)',
-                  fontSize: '80px',
-                  fontWeight: 700,
-                  lineHeight: '88px',
-                  letterSpacing: '1.6px'
-                }}>
+            <h1 className="hero-title mb-12">
               {data.hero.title?.split('\n').map((line: string, index: number) => (
                 <span key={index}>
                   {line}
@@ -246,76 +219,41 @@ export default function HomePage() {
           </div>
         </div>
         
-        {/* Booking Widget - Exact Figma Styling */}
+        {/* Booking Widget - Using Design System */}
         <div className="px-6 pb-8">
-          <div className="max-w-4xl mx-auto" 
-               style={{ 
-                 background: 'rgba(26, 24, 21, 0.5)',
-                 backdropFilter: 'blur(12px)',
-                 borderRadius: '8px',
-                 padding: '24px'
-               }}>
+          <div className="max-w-4xl mx-auto booking-widget">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-              <div className="flex items-center text-left" style={{ gap: '40px' }}>
+              <div className="flex items-center text-left gap-section">
                 <MapPin className="w-5 h-5" />
                 <div>
-                  <div className="text-white text-xs opacity-75" 
-                       style={{
-                         fontFamily: 'var(--font-inter)',
-                         fontSize: '18px',
-                         fontWeight: 500,
-                         letterSpacing: '0.9px'
-                       }}>
+                  <div className="booking-field text-xs opacity-75">
                     Select Location
                   </div>
                   <div className="text-white font-medium">West LA & Malibu</div>
                 </div>
               </div>
               
-              <div className="flex items-center text-left" style={{ gap: '40px' }}>
+              <div className="flex items-center text-left gap-section">
                 <Calendar className="w-5 h-5" />
                 <div>
-                  <div className="text-white text-xs opacity-75"
-                       style={{
-                         fontFamily: 'var(--font-inter)',
-                         fontSize: '18px',
-                         fontWeight: 500,
-                         letterSpacing: '0.9px'
-                       }}>
+                  <div className="booking-field text-xs opacity-75">
                     Add Dates
                   </div>
                   <div className="text-white font-medium">Check availability</div>
                 </div>
               </div>
               
-              <div className="flex items-center text-left" style={{ gap: '40px' }}>
+              <div className="flex items-center text-left gap-section">
                 <Users className="w-5 h-5" />
                 <div>
-                  <div className="text-white text-xs opacity-75"
-                       style={{
-                         fontFamily: 'var(--font-inter)',
-                         fontSize: '18px',
-                         fontWeight: 500,
-                         letterSpacing: '0.9px'
-                       }}>
+                  <div className="booking-field text-xs opacity-75">
                     Total Guests
                   </div>
                   <div className="text-white font-medium">2 guests</div>
                 </div>
               </div>
               
-              <button className="transition-colors"
-                      style={{
-                        background: '#e1bc4d',
-                        color: '#1a1815',
-                        fontFamily: 'var(--font-inter)',
-                        fontSize: '18px',
-                        fontWeight: 500,
-                        letterSpacing: '0.9px',
-                        padding: '16px 40px',
-                        borderRadius: '4px',
-                        border: 'none'
-                      }}>
+              <button className="btn-primary button-text">
                 Book Now
               </button>
             </div>
@@ -323,29 +261,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Welcome Section - Figma Typography */}
-      <section style={{ padding: '120px 24px' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 items-center" style={{ gap: '60px' }}>
+      {/* Welcome Section - Design System Typography */}
+      <section className="padding-section">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-hero">
             <div>
-              <h2 className="mb-8"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontSize: '48px',
-                    fontWeight: 500,
-                    lineHeight: '54px',
-                    letterSpacing: '0.96px',
-                    color: '#1a1815'
-                  }}>
+              <h2 className="section-title mb-8">
                 {data.hero.welcomeTitle}
               </h2>
-              <p style={{
-                   fontFamily: 'var(--font-hanken-grotesk)',
-                   fontSize: '18px',
-                   fontWeight: 400,
-                   lineHeight: '28px',
-                   color: '#1a1815'
-                 }}>
+              <p className="body-text">
                 {data.hero.welcomeDescription}
               </p>
             </div>
@@ -391,23 +315,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Locations Section - Exact Figma Styling */}
-      <section style={{ padding: '120px 24px' }}>
-        <div className="max-w-7xl mx-auto">
+      {/* Locations Section - Design System */}
+      <section className="padding-section">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h3 style={{
-                 fontFamily: 'var(--font-inter)',
-                 fontSize: '48px',
-                 fontWeight: 500,
-                 lineHeight: '54px',
-                 letterSpacing: '0.96px',
-                 color: '#1a1815'
-               }}>
+            <h3 className="section-title">
               Locations
             </h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '60px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-hero">
             {/* West LA */}
             <div className="group cursor-pointer text-center">
               <img 
@@ -415,28 +332,13 @@ export default function HomePage() {
                 alt="West LA location"
                 className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
               />
-              <h4 className="mb-4"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontSize: '30px',
-                    fontWeight: 500,
-                    lineHeight: '36px',
-                    letterSpacing: '0.6px',
-                    color: '#1a1815'
-                  }}>
+              <h4 className="location-title mb-4">
                 {data.locations?.westLA?.title}
               </h4>
-              <p className="mb-6 max-w-md mx-auto"
-                 style={{
-                   fontFamily: 'var(--font-hanken-grotesk)',
-                   fontSize: '18px',
-                   fontWeight: 400,
-                   lineHeight: '28px',
-                   color: '#1a1815'
-                 }}>
+              <p className="body-text mb-6 max-w-md mx-auto">
                 {data.locations?.westLA?.description}
               </p>
-              <button className="btn-accent">
+              <button className="btn-accent button-text">
                 {data.locations?.westLA?.ctaText}
               </button>
             </div>
@@ -448,28 +350,13 @@ export default function HomePage() {
                 alt="Malibu location"
                 className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
               />
-              <h4 className="mb-4"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontSize: '30px',
-                    fontWeight: 500,
-                    lineHeight: '36px',
-                    letterSpacing: '0.6px',
-                    color: '#1a1815'
-                  }}>
+              <h4 className="location-title mb-4">
                 {data.locations?.malibu?.title}
               </h4>
-              <p className="mb-6 max-w-md mx-auto"
-                 style={{
-                   fontFamily: 'var(--font-hanken-grotesk)',
-                   fontSize: '18px',
-                   fontWeight: 400,
-                   lineHeight: '28px',
-                   color: '#1a1815'
-                 }}>
+              <p className="body-text mb-6 max-w-md mx-auto">
                 {data.locations?.malibu?.description}
               </p>
-              <button className="btn-accent">
+              <button className="btn-accent button-text">
                 {data.locations?.malibu?.ctaText}
               </button>
             </div>
@@ -478,9 +365,9 @@ export default function HomePage() {
       </section>
 
       {/* Golden Hour Section */}
-      <section style={{ padding: '120px 24px', backgroundColor: '#fff7e9' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 items-center" style={{ gap: '60px' }}>
+      <section className="padding-section bg-cream">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-hero">
             <div>
               <img 
                 src={data.goldenHour?.image}
@@ -489,28 +376,13 @@ export default function HomePage() {
               />
             </div>
             <div className="text-center">
-              <h3 className="mb-6"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontSize: '36px',
-                    fontWeight: 500,
-                    lineHeight: '42px',
-                    letterSpacing: '0.72px',
-                    color: '#1a1815'
-                  }}>
+              <h3 className="hero-subtitle mb-6">
                 {data.goldenHour?.title}
               </h3>
-              <p className="mb-8 max-w-md mx-auto"
-                 style={{
-                   fontFamily: 'var(--font-hanken-grotesk)',
-                   fontSize: '18px',
-                   fontWeight: 400,
-                   lineHeight: '28px',
-                   color: '#1a1815'
-                 }}>
+              <p className="body-text mb-8 max-w-md mx-auto">
                 {data.goldenHour?.description}
               </p>
-              <button className="btn-primary">
+              <button className="btn-primary button-text">
                 {data.goldenHour?.ctaText}
               </button>
             </div>
@@ -519,44 +391,22 @@ export default function HomePage() {
       </section>
 
       {/* In the Press Section */}
-      <section style={{ padding: '80px 24px', backgroundColor: '#fff7e9' }}>
-        <div className="max-w-6xl mx-auto">
+      <section className="padding-section bg-cream">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h3 style={{
-                 fontFamily: 'var(--font-inter)',
-                 fontSize: '48px',
-                 fontWeight: 500,
-                 lineHeight: '54px',
-                 letterSpacing: '0.96px',
-                 color: '#1a1815'
-               }}>
+            <h3 className="section-title">
               In The Press
             </h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '30px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-card">
             {(data.pressFeatures || []).map((feature: any, index: number) => (
               <div key={index} className="text-center">
                 <div className="press-card">
-                  <h4 className="mb-2"
-                      style={{
-                        fontFamily: 'var(--font-inter)',
-                        fontSize: '30px',
-                        fontWeight: 500,
-                        lineHeight: '36px',
-                        letterSpacing: '0.6px',
-                        color: '#1a1815'
-                      }}>
+                  <h4 className="press-quote mb-2">
                     "{feature.title}"
                   </h4>
-                  <p className="mb-3"
-                     style={{
-                       fontFamily: 'var(--font-hanken-grotesk)',
-                       fontSize: '18px',
-                       fontWeight: 400,
-                       lineHeight: '28px',
-                       color: '#1a1815'
-                     }}>
+                  <p className="body-text">
                     — {feature.publication}
                   </p>
                 </div>
@@ -567,32 +417,18 @@ export default function HomePage() {
       </section>
 
       {/* June Journal Section */}
-      <section style={{ padding: '120px 24px' }}>
-        <div className="max-w-7xl mx-auto">
+      <section className="padding-section">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h3 className="mb-4"
-                style={{
-                  fontFamily: 'var(--font-inter)',
-                  fontSize: '48px',
-                  fontWeight: 500,
-                  lineHeight: '54px',
-                  letterSpacing: '0.96px',
-                  color: '#1a1815'
-                }}>
+            <h3 className="section-title mb-4">
               June Journal
             </h3>
-            <p style={{
-                 fontFamily: 'var(--font-hanken-grotesk)',
-                 fontSize: '18px',
-                 fontWeight: 400,
-                 lineHeight: '28px',
-                 color: '#1a1815'
-               }}>
+            <p className="body-text">
               Feels like June — what's inspiring us right now, from local art to live music to neighborhood discoveries and everything in between.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '30px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-card">
             {(data.journalPosts || []).map((post: any, index: number) => (
               <div key={index} className="group cursor-pointer">
                 <img 
@@ -600,39 +436,16 @@ export default function HomePage() {
                   alt={post.title}
                   className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
                 />
-                <div className="mb-2"
-                     style={{
-                       fontFamily: 'var(--font-inter)',
-                       fontSize: '18px',
-                       fontWeight: 500,
-                       lineHeight: '24px',
-                       letterSpacing: '1.08px',
-                       color: '#1a1815'
-                     }}>
+                <div className="button-text mb-2 text-xs uppercase tracking-wider opacity-75">
                   {post.date}
                 </div>
-                <h4 className="mb-4 group-hover:text-gray-600 transition-colors"
-                    style={{
-                      fontFamily: 'var(--font-inter)',
-                      fontSize: '28px',
-                      fontWeight: 500,
-                      lineHeight: '34px',
-                      letterSpacing: '0.56px',
-                      color: '#1a1815'
-                    }}>
+                <h4 className="journal-title mb-4 group-hover:text-gray-600 transition-colors">
                   {post.title}
                 </h4>
-                <p className="mb-4"
-                   style={{
-                     fontFamily: 'var(--font-hanken-grotesk)',
-                     fontSize: '18px',
-                     fontWeight: 400,
-                     lineHeight: '28px',
-                     color: '#1a1815'
-                   }}>
+                <p className="body-text mb-4">
                   {post.excerpt}
                 </p>
-                <button className="btn-outline">
+                <button className="btn-outline button-text">
                   Read More
                 </button>
               </div>
@@ -642,17 +455,9 @@ export default function HomePage() {
       </section>
 
       {/* Social Media Section */}
-      <section style={{ padding: '80px 24px', backgroundColor: '#fff7e9' }}>
-        <div className="max-w-6xl mx-auto text-center">
-          <h4 className="mb-8"
-              style={{
-                fontFamily: 'var(--font-inter)',
-                fontSize: '36px',
-                fontWeight: 500,
-                lineHeight: '42px',
-                letterSpacing: '0.72px',
-                color: '#1a1815'
-              }}>
+      <section className="padding-section bg-cream">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h4 className="hero-subtitle mb-8">
             Follow us @hoteljunemalibu and @hoteljunewestla
           </h4>
           
@@ -697,31 +502,18 @@ export default function HomePage() {
       </section>
 
       {/* Newsletter Section */}
-      <section style={{ padding: '80px 24px' }}>
-        <div className="max-w-2xl mx-auto text-center">
-          <h4 className="mb-6"
-              style={{
-                fontFamily: 'var(--font-inter)',
-                fontSize: '28px',
-                fontWeight: 500,
-                lineHeight: '34px',
-                letterSpacing: '0.56px',
-                color: '#1a1815'
-              }}>
+      <section className="padding-section">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <h4 className="journal-title mb-6">
             Be the first to know everything about Hotel June.
           </h4>
-          <div className="flex gap-3" style={{ backgroundColor: '#fff7e9', padding: '16px 40px', borderRadius: '4px' }}>
+          <div className="bg-cream flex gap-3 rounded padding-card">
             <input 
               type="email" 
               placeholder="Email Address"
-              className="flex-1 px-4 py-2 border-0 bg-transparent focus:outline-none"
-              style={{
-                fontFamily: 'var(--font-hanken-grotesk)',
-                fontSize: '18px',
-                color: '#1a1815'
-              }}
+              className="flex-1 px-4 py-2 border-0 bg-transparent focus:outline-none body-text"
             />
-            <button className="btn-primary">
+            <button className="btn-primary button-text">
               Submit
             </button>
           </div>
@@ -729,52 +521,26 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: '#fff7e9', padding: '60px 24px' }}>
-        <div className="max-w-6xl mx-auto">
+      <footer className="bg-cream padding-hero">
+        <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div>
-              <h5 className="mb-3"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    letterSpacing: '0.84px',
-                    color: '#1a1815'
-                  }}>
+              <h5 className="font-display text-sm font-medium tracking-wider mb-3 text-primary">
                 Offers Contact Colleagues Careers Gift Cards
               </h5>
             </div>
             <div>
-              <h5 className="mb-3"
-                  style={{
-                    fontFamily: 'var(--font-inter)',
-                    fontSize: '14px',
-                    fontWeight: 500,
-                    letterSpacing: '0.84px',
-                    color: '#1a1815'
-                  }}>
+              <h5 className="font-display text-sm font-medium tracking-wider mb-3 text-primary">
                 Accessibility Terms of Use Privacy Policy Sitemap Select Language
               </h5>
             </div>
             <div>
-              <p style={{
-                   fontFamily: 'var(--font-hanken-grotesk)',
-                   fontSize: '16px',
-                   fontWeight: 400,
-                   lineHeight: '26px',
-                   color: '#1a1815'
-                 }}>
+              <p className="font-body text-base text-primary">
                 A Proper Hospitality Hotel
               </p>
             </div>
             <div>
-              <p style={{
-                   fontFamily: 'var(--font-inter)',
-                   fontSize: '14px',
-                   fontWeight: 500,
-                   letterSpacing: '0.84px',
-                   color: '#1a1815'
-                 }}>
+              <p className="font-display text-sm font-medium tracking-wider text-primary">
                 Proper Hotels Hotel June The Collective
               </p>
             </div>
