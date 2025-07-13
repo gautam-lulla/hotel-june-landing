@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, MapPin, Calendar, Users, Menu } from 'lucide-react';
 
-// Contentful client setup
+// Contentful client setup (same as before)
 const createClient = () => {
-  const getEnvVar = (key) => {
+  const getEnvVar = (key: string) => {
     try {
       return typeof window !== 'undefined' ? 
-        window.process?.env?.[key] || 
-        window.env?.[key] || 
+        (window as any).process?.env?.[key] || 
+        (window as any).env?.[key] || 
         null : 
         process.env?.[key] || null;
     } catch {
@@ -21,12 +21,11 @@ const createClient = () => {
   const accessToken = getEnvVar('REACT_APP_CONTENTFUL_ACCESS_TOKEN');
   
   if (!spaceId || !accessToken) {
-    console.log('🔧 No Contentful credentials found');
     return null;
   }
 
   return {
-    async getEntries(contentType) {
+    async getEntries(contentType: string) {
       try {
         const response = await fetch(
           `https://cdn.contentful.com/spaces/${spaceId}/entries?content_type=${contentType}&access_token=${accessToken}`
@@ -42,87 +41,19 @@ const createClient = () => {
 
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentSocialIndex, setCurrentSocialIndex] = useState(0); // Added for carousel
-  const [currentWelcomeIndex, setCurrentWelcomeIndex] = useState(0); // Added for welcome carousel
-  const [pageData, setPageData] = useState(null);
+  const [currentSocialIndex, setCurrentSocialIndex] = useState(0);
+  const [currentWelcomeIndex, setCurrentWelcomeIndex] = useState(0);
+  const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Load content from Contentful
-  useEffect(() => {
-    const fetchData = async () => {
-      const client = createClient();
-      
-      if (!client) {
-        setLoading(false);
-        return;
-      }
-
-      const getEnvVar = (key) => {
-        try {
-          return typeof window !== 'undefined' ? 
-            window.process?.env?.[key] || 
-            window.env?.[key] || 
-            null : 
-            process.env?.[key] || null;
-        } catch {
-          return null;
-        }
-      };
-      
-      // Check if we have API credentials first
-      const hasCredentials = getEnvVar('REACT_APP_CONTENTFUL_SPACE_ID') && 
-        getEnvVar('REACT_APP_CONTENTFUL_ACCESS_TOKEN');
-      
-      if (!hasCredentials) {
-        console.log('🎨 Demo mode: Using beautiful fallback content');
-        return; // Skip loading, use fallback data
-      }
-      
-      try {
-        setLoading(true);
-        
-        // Fetch different content types
-        const [
-          hotelPageData,
-          bungalowData, 
-          amenitiesData,
-          journalData
-        ] = await Promise.all([
-          client.getEntries('hotelPage'),
-          client.getEntries('bungalow'),
-          client.getEntries('amenity'),
-          client.getEntries('journalPost')
-        ]);
-
-        // Process and structure the data
-        const processedData = {
-          hero: hotelPageData?.items?.[0]?.fields || {},
-          bungalows: bungalowData?.items || [],
-          amenities: amenitiesData?.items || [],
-          journalPosts: journalData?.items || []
-        };
-
-        setPageData(processedData);
-      } catch (err) {
-        setError(err.message);
-        console.error('Error loading page data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Fallback data while loading or if Contentful fails
+  // Enhanced fallback data matching Figma specs
   const fallbackData = {
     hero: {
       title: "Where It's Saturday\nAfternoon All Year Long",
       subtitle: "Boutique Hotels in Malibu and West LA",
       heroImage: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop",
       welcomeTitle: "Welcome to Hotel June",
-      welcomeDescription: "Hotel June is a new hospitality experience featuring boutique hotels in West LA and Malibu. A feeling of independence and community — a place where discerning guests can come to escape responsibility and recover. June Hotels was established after an epiphany that there are hardly any boutique hotels in Los Angeles that embrace the spirit of youth, which can get lost when hotels become too corporate.",
+      welcomeDescription: "Hotel June is imbued with inviting design, vibrant food, and thoughtful details. It's where creative happenings draw you closer to the city outside your door, and the gathering crowd inspires a renewed love for time away from home.",
       welcomeImages: [
         "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop",
         "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop", 
@@ -132,75 +63,115 @@ export default function HomePage() {
     locations: {
       westLA: {
         title: "West LA",
-        description: "Located in West Hollywood with newly opened Catch Steak, a luxury steakhouse paired with Santa Monica and Venice",
-        ctaText: "EXPLORE",
+        description: "Located in West LA, just minutes from LAX and a short drive to Santa Monica and Venice",
+        ctaText: "Explore",
         image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&h=400&fit=crop"
       },
       malibu: {
         title: "Malibu", 
-        description: "Our Private Malibu Retreat Nestled Into Four Lush Acres on Pacific Coast Highway",
-        ctaText: "EXPLORE",
+        description: "Your Private Malibu Retreat, Nestled Into Four Lush Acres On Famed Pacific Coast Highway",
+        ctaText: "Explore",
         image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
       }
     },
     goldenHour: {
       title: "Golden Hour Starts Here",
-      description: "Ceramic from Chef & Cesar, every's hottest, Best Mexican restaurant and bar in Los Angeles influenced cooking. With a delightfully tart, smooth texture, this one for tacos. Tune this menu for the life you want to live and this golden hour and stay where the stories are every night here.",
-      ctaText: "VISIT CARAVAN",
+      description: "Caravan Swim Club is Hotel June's breezy, Baja-inspired poolside restaurant and bar—a sun-soaked hideaway serving fresh coastal cuisine, natural wines, and spirited cocktails from day to night. Think fish tacos by the fire pit, golden hour gatherings, and a laid-back vibe that captures the essence of Westside summer, all year long.",
+      ctaText: "Visit Caravan",
       image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=600&fit=crop"
     },
     journalPosts: [
       {
-        date: "WEST LA | FEBRUARY 21, 2024",
+        date: "West LA | February 21, 2025",
         title: "Health and Wellness: Yoga, Spas, and Fitness on the West Side",
+        excerpt: "Los Angeles is a haven for health and wellness enthusiasts, and nowhere is this more evident than in West LA, Santa Monica, and Venice. Whether you're a local looking...",
         image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop"
       },
       {
-        date: "MALIBU | FEBRUARY 21, 2024", 
+        date: "Malibu | February 21, 2025", 
         title: "Hotel June by Chelsea Cutler",
+        excerpt: "Once a historic hideaway for wayfaring writers, musicians, and artists nestled in Point Dume, Hotel June remains a beacon of inspiration for a fresh generation of creatives. We're excited to share that Hotel...",
         image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop"
       },
       {
-        date: "WEST LA | FEBRUARY 21, 2024",
-        title: "The Best of Santa Monica: A Guide to Restaurants, Shopping, Wellness and Attractions",
+        date: "West LA | February 21, 2025",
+        title: "The Best of Santa Monica: A Guide to Restaurants, Shopping, Wellness, and Outdoor Activities",
+        excerpt: "Santa Monica, with its beautiful beaches and vibrant atmosphere, offers a plethora of activities for visitors and locals alike.",
         image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
       }
     ],
     pressFeatures: [
       {
-        publication: "LA EATER",
-        title: "Best Boutique Hotels in Los Angeles",
+        publication: "Travel + Leisure",
+        title: "11 Best Boutique Hotels in Los Angeles",
         thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100&h=100&fit=crop"
       },
       {
-        publication: "T+L MAG", 
+        publication: "Fathom", 
         title: "The Best New Hotels",
         thumbnail: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=100&h=100&fit=crop"
       },
       {
-        publication: "Architectural Digest",
-        title: "The Art of Relaxed Beach Living", 
+        publication: "Condé Nast Traveler",
+        title: "The Aura of Relaxed Beach Living", 
         thumbnail: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=100&h=100&fit=crop"
       }
     ]
   };
 
-  // Use pageData if loaded, otherwise use fallback
+  // Load content (same logic as before)
+  useEffect(() => {
+    const fetchData = async () => {
+      const client = createClient();
+      if (!client) {
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        setLoading(true);
+        const [hotelPageData, bungalowData, amenitiesData, journalData] = await Promise.all([
+          client.getEntries('hotelPage'),
+          client.getEntries('bungalow'),
+          client.getEntries('amenity'),
+          client.getEntries('journalPost')
+        ]);
+
+        const processedData = {
+          hero: hotelPageData?.items?.[0]?.fields || {},
+          bungalows: bungalowData?.items || [],
+          amenities: amenitiesData?.items || [],
+          journalPosts: journalData?.items || []
+        };
+
+        setPageData(processedData);
+      } catch (err) {
+        console.error('Error loading page data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const data = pageData || fallbackData;
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section with Integrated Navigation */}
-      <section className="relative h-screen flex flex-col text-white text-center"
-               style={{
-                 backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${data.hero.heroImage || data.hero.image || 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop'}')`,
-                 backgroundSize: 'cover',
-                 backgroundPosition: 'center'
-               }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#fff7e9' }}>
+      {/* Hero Section - Following Figma Specs */}
+      <section 
+        className="relative flex flex-col text-white text-center min-h-screen"
+        style={{
+          backgroundColor: '#ebd8cc',
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${data.hero.heroImage}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         
-        {/* Top Navigation Bar */}
-        <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-6">
-          {/* Hamburger Menu - Top Left */}
+        {/* Navigation Bar - Exact Figma Positioning */}
+        <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between" style={{ padding: '60px' }}>
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-white hover:text-gray-300 transition-colors"
@@ -208,106 +179,181 @@ export default function HomePage() {
             <Menu className="w-6 h-6" />
           </button>
           
-          {/* Hotel June Logo - Center */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-light text-white">
+          <div className="absolute left-1/2 transform -translate-x-1/2 text-white" 
+               style={{ 
+                 fontFamily: 'var(--font-inter)',
+                 fontSize: '18px',
+                 fontWeight: 500,
+                 letterSpacing: '0.9px'
+               }}>
             hotel june
           </div>
           
-          {/* Destinations Dropdown - Top Right */}
           <div className="relative">
-            <button className="text-white hover:text-gray-300 transition-colors flex items-center text-sm font-medium tracking-wider">
-              DESTINATIONS
-              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+            <button className="text-white hover:text-gray-300 transition-colors flex items-center"
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '18px',
+                      fontWeight: 500,
+                      letterSpacing: '0.9px'
+                    }}>
+              Destinations ▼
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu Overlay */}
+        {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="absolute top-0 left-0 right-0 bg-black/90 backdrop-blur-sm z-40 pt-20">
             <div className="px-6 py-8 space-y-6">
-              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">STAY</a>
-              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">DINE</a>
-              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">GATHER</a>
-              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">JOURNAL</a>
-              <a href="#" className="block text-white text-lg font-medium hover:text-gray-300">CONTACT</a>
+              {['STAY', 'DINE', 'GATHER', 'JOURNAL', 'CONTACT'].map((item) => (
+                <a key={item} href="#" className="block text-white text-lg font-medium hover:text-gray-300">
+                  {item}
+                </a>
+              ))}
             </div>
           </div>
         )}
 
-        {/* Main Hero Content */}
-        <div className="flex-1 flex items-center justify-center">
+        {/* Hero Content - Exact Typography from Figma */}
+        <div className="flex-1 flex items-center justify-center" style={{ padding: '60px' }}>
           <div className="max-w-4xl px-6">
-            <h1 className="text-6xl md:text-7xl font-light mb-6 leading-tight">
-              {data.hero.title?.split('\n').map((line, index) => (
+            <p className="mb-6 text-white"
+               style={{
+                 fontFamily: 'var(--font-inter)',
+                 fontSize: '36px',
+                 fontWeight: 500,
+                 lineHeight: '42px',
+                 letterSpacing: '0.72px'
+               }}>
+              {data.hero.subtitle}
+            </p>
+            <h1 className="text-white mb-12 leading-tight"
+                style={{
+                  fontFamily: 'var(--font-inter)',
+                  fontSize: '80px',
+                  fontWeight: 700,
+                  lineHeight: '88px',
+                  letterSpacing: '1.6px'
+                }}>
+              {data.hero.title?.split('\n').map((line: string, index: number) => (
                 <span key={index}>
                   {line}
                   {index < data.hero.title.split('\n').length - 1 && <br />}
                 </span>
-              )) || "Where It's Saturday Afternoon All Year Long"}
+              ))}
             </h1>
-            <p className="text-xl mb-12 opacity-90 max-w-2xl mx-auto">
-              {data.hero.subtitle || "Boutique Hotels in Malibu and West LA"}
-            </p>
           </div>
         </div>
         
-        {/* Booking Widget - Stuck to Bottom */}
+        {/* Booking Widget - Exact Figma Styling */}
         <div className="px-6 pb-8">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto" 
+               style={{ 
+                 background: 'rgba(26, 24, 21, 0.5)',
+                 backdropFilter: 'blur(12px)',
+                 borderRadius: '8px',
+                 padding: '24px'
+               }}>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-              <div className="flex items-center text-left">
-                <MapPin className="w-5 h-5 mr-3" />
+              <div className="flex items-center text-left" style={{ gap: '40px' }}>
+                <MapPin className="w-5 h-5" />
                 <div>
-                  <div className="text-xs opacity-75">SELECT LOCATION</div>
-                  <div className="font-medium">West LA & Malibu</div>
+                  <div className="text-white text-xs opacity-75" 
+                       style={{
+                         fontFamily: 'var(--font-inter)',
+                         fontSize: '18px',
+                         fontWeight: 500,
+                         letterSpacing: '0.9px'
+                       }}>
+                    Select Location
+                  </div>
+                  <div className="text-white font-medium">West LA & Malibu</div>
                 </div>
               </div>
-              <div className="flex items-center text-left">
-                <Calendar className="w-5 h-5 mr-3" />
+              
+              <div className="flex items-center text-left" style={{ gap: '40px' }}>
+                <Calendar className="w-5 h-5" />
                 <div>
-                  <div className="text-xs opacity-75">ADD DATES</div>
-                  <div className="font-medium">Check availability</div>
+                  <div className="text-white text-xs opacity-75"
+                       style={{
+                         fontFamily: 'var(--font-inter)',
+                         fontSize: '18px',
+                         fontWeight: 500,
+                         letterSpacing: '0.9px'
+                       }}>
+                    Add Dates
+                  </div>
+                  <div className="text-white font-medium">Check availability</div>
                 </div>
               </div>
-              <div className="flex items-center text-left">
-                <Users className="w-5 h-5 mr-3" />
+              
+              <div className="flex items-center text-left" style={{ gap: '40px' }}>
+                <Users className="w-5 h-5" />
                 <div>
-                  <div className="text-xs opacity-75">TOTAL GUESTS</div>
-                  <div className="font-medium">2 guests</div>
+                  <div className="text-white text-xs opacity-75"
+                       style={{
+                         fontFamily: 'var(--font-inter)',
+                         fontSize: '18px',
+                         fontWeight: 500,
+                         letterSpacing: '0.9px'
+                       }}>
+                    Total Guests
+                  </div>
+                  <div className="text-white font-medium">2 guests</div>
                 </div>
               </div>
-              <button className="bg-orange-400 hover:bg-orange-500 text-black font-medium py-3 px-8 rounded transition-colors">
-                BOOK NOW
+              
+              <button className="transition-colors"
+                      style={{
+                        background: '#e1bc4d',
+                        color: '#1a1815',
+                        fontFamily: 'var(--font-inter)',
+                        fontSize: '18px',
+                        fontWeight: 500,
+                        letterSpacing: '0.9px',
+                        padding: '16px 40px',
+                        borderRadius: '4px',
+                        border: 'none'
+                      }}>
+                Book Now
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Welcome Section */}
-      <section className="py-24 px-6">
+      {/* Welcome Section - Figma Typography */}
+      <section style={{ padding: '120px 24px' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-center" style={{ gap: '60px' }}>
             <div>
-              <h2 className="text-4xl font-light mb-8">
-                {data.hero.welcomeTitle || "Welcome to Hotel June"}
+              <h2 className="mb-8"
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    fontSize: '48px',
+                    fontWeight: 500,
+                    lineHeight: '54px',
+                    letterSpacing: '0.96px',
+                    color: '#1a1815'
+                  }}>
+                {data.hero.welcomeTitle}
               </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                {data.hero.welcomeDescription || `Hotel June Malibu is a unique retreat space for intimate gatherings, corporate offsites, and personal getaways in a 
-                sprawling wellness, meditation, and artistic center nestled into four lush acres overlooking the Pacific. When we 
-                say it's a place for intimate thought, we mean that we host gatherings, executive get-togethers, wellness group 
-                sessions, and retreats. Wellness takes an important role as a Spa featuring therapy and contemplative massage 
-                is a big offering and presence in the resort; and corporate groups, perfect setting for traveling CEOs.`}
+              <p style={{
+                   fontFamily: 'var(--font-hanken-grotesk)',
+                   fontSize: '18px',
+                   fontWeight: 400,
+                   lineHeight: '28px',
+                   color: '#1a1815'
+                 }}>
+                {data.hero.welcomeDescription}
               </p>
             </div>
             
             {/* Welcome Image Carousel */}
             <div className="relative">
               <img 
-                src={data.hero.welcomeImages?.[currentWelcomeIndex] || 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop'}
+                src={data.hero.welcomeImages?.[currentWelcomeIndex]}
                 alt="Hotel June Welcome"
                 className="w-full h-96 object-cover"
               />
@@ -330,7 +376,7 @@ export default function HomePage() {
                 <ChevronRight className="w-5 h-5" />
               </button>
               <div className="flex justify-center mt-4 space-x-2">
-                {(data.hero.welcomeImages || []).map((_, index) => (
+                {(data.hero.welcomeImages || []).map((_: any, index: number) => (
                   <button
                     key={index}
                     onClick={() => setCurrentWelcomeIndex(index)}
@@ -345,107 +391,174 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Locations Section - FIXED */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6">
+      {/* Locations Section - Exact Figma Styling */}
+      <section style={{ padding: '120px 24px' }}>
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h3 className="text-4xl font-light mb-4">Locations</h3>
+            <h3 style={{
+                 fontFamily: 'var(--font-inter)',
+                 fontSize: '48px',
+                 fontWeight: 500,
+                 lineHeight: '54px',
+                 letterSpacing: '0.96px',
+                 color: '#1a1815'
+               }}>
+              Locations
+            </h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '60px' }}>
             {/* West LA */}
-            <div className="group cursor-pointer">
+            <div className="group cursor-pointer text-center">
               <img 
-                src={data.locations?.westLA?.image || "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&h=400&fit=crop"}
+                src={data.locations?.westLA?.image}
                 alt="West LA location"
                 className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
               />
-              <div className="text-center">
-                <h4 className="text-2xl font-light mb-4">{data.locations?.westLA?.title || "West LA"}</h4>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                  {data.locations?.westLA?.description || "Located in West Hollywood with newly opened Catch Steak, a luxury steakhouse paired with Santa Monica and Venice"}
-                </p>
-                <button className="border border-gray-900 text-gray-900 px-8 py-3 rounded hover:bg-gray-900 hover:text-white transition-colors">
-                  {data.locations?.westLA?.ctaText || "EXPLORE"}
-                </button>
-              </div>
+              <h4 className="mb-4"
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    fontSize: '30px',
+                    fontWeight: 500,
+                    lineHeight: '36px',
+                    letterSpacing: '0.6px',
+                    color: '#1a1815'
+                  }}>
+                {data.locations?.westLA?.title}
+              </h4>
+              <p className="mb-6 max-w-md mx-auto"
+                 style={{
+                   fontFamily: 'var(--font-hanken-grotesk)',
+                   fontSize: '18px',
+                   fontWeight: 400,
+                   lineHeight: '28px',
+                   color: '#1a1815'
+                 }}>
+                {data.locations?.westLA?.description}
+              </p>
+              <button className="btn-accent">
+                {data.locations?.westLA?.ctaText}
+              </button>
             </div>
 
             {/* Malibu */}
-            <div className="group cursor-pointer">
+            <div className="group cursor-pointer text-center">
               <img 
-                src={data.locations?.malibu?.image || "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"}
+                src={data.locations?.malibu?.image}
                 alt="Malibu location"
                 className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
               />
-              <div className="text-center">
-                <h4 className="text-2xl font-light mb-4">{data.locations?.malibu?.title || "Malibu"}</h4>
-                <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                  {data.locations?.malibu?.description || "Our Private Malibu Retreat Nestled Into Four Lush Acres on Pacific Coast Highway"}
-                </p>
-                <button className="border border-gray-900 text-gray-900 px-8 py-3 rounded hover:bg-gray-900 hover:text-white transition-colors">
-                  {data.locations?.malibu?.ctaText || "EXPLORE"}
-                </button>
-              </div>
+              <h4 className="mb-4"
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    fontSize: '30px',
+                    fontWeight: 500,
+                    lineHeight: '36px',
+                    letterSpacing: '0.6px',
+                    color: '#1a1815'
+                  }}>
+                {data.locations?.malibu?.title}
+              </h4>
+              <p className="mb-6 max-w-md mx-auto"
+                 style={{
+                   fontFamily: 'var(--font-hanken-grotesk)',
+                   fontSize: '18px',
+                   fontWeight: 400,
+                   lineHeight: '28px',
+                   color: '#1a1815'
+                 }}>
+                {data.locations?.malibu?.description}
+              </p>
+              <button className="btn-accent">
+                {data.locations?.malibu?.ctaText}
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Golden Hour Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <section style={{ padding: '120px 24px', backgroundColor: '#fff7e9' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-center" style={{ gap: '60px' }}>
             <div>
               <img 
-                src={data.goldenHour?.image || "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=600&fit=crop"}
+                src={data.goldenHour?.image}
                 alt="Golden Hour dining"
                 className="w-full h-96 object-cover"
               />
             </div>
             <div className="text-center">
-              <div className="mb-8">
-                <div className="w-20 h-20 mx-auto mb-6 bg-gray-200 rounded-full flex items-center justify-center">
-                  <div className="text-2xl">🌅</div>
-                </div>
-                <h3 className="text-4xl font-light mb-6">
-                  {data.goldenHour?.title || "Golden Hour Starts Here"}
-                </h3>
-                <p className="text-gray-600 leading-relaxed mb-8 max-w-md mx-auto">
-                  {data.goldenHour?.description || "Ceramic from Chef & Cesar, every's hottest, Best Mexican restaurant and bar in Los Angeles influenced cooking. With a delightfully tart, smooth texture, this one for tacos. Tune this menu for the life you want to live and this golden hour and stay where the stories are every night here."}
-                </p>
-                <button className="bg-gray-900 text-white px-8 py-3 rounded hover:bg-gray-800 transition-colors">
-                  {data.goldenHour?.ctaText || "VISIT CARAVAN"}
-                </button>
-              </div>
+              <h3 className="mb-6"
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    fontSize: '36px',
+                    fontWeight: 500,
+                    lineHeight: '42px',
+                    letterSpacing: '0.72px',
+                    color: '#1a1815'
+                  }}>
+                {data.goldenHour?.title}
+              </h3>
+              <p className="mb-8 max-w-md mx-auto"
+                 style={{
+                   fontFamily: 'var(--font-hanken-grotesk)',
+                   fontSize: '18px',
+                   fontWeight: 400,
+                   lineHeight: '28px',
+                   color: '#1a1815'
+                 }}>
+                {data.goldenHour?.description}
+              </p>
+              <button className="btn-primary">
+                {data.goldenHour?.ctaText}
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* In the Press Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6">
+      <section style={{ padding: '80px 24px', backgroundColor: '#fff7e9' }}>
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h3 className="text-3xl font-light">In the Press</h3>
+            <h3 style={{
+                 fontFamily: 'var(--font-inter)',
+                 fontSize: '48px',
+                 fontWeight: 500,
+                 lineHeight: '54px',
+                 letterSpacing: '0.96px',
+                 color: '#1a1815'
+               }}>
+              In The Press
+            </h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {(data.pressFeatures || []).map((feature, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '30px' }}>
+            {(data.pressFeatures || []).map((feature: any, index: number) => (
               <div key={index} className="text-center">
-                <img 
-                  src={feature.thumbnail || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100&h=100&fit=crop'}
-                  alt={feature.publication}
-                  className="w-12 h-12 object-cover mb-4 mx-auto"
-                />
-                <div className="bg-gray-100 p-4 text-center">
-                  <h4 className="text-lg font-light mb-2 text-center">"{feature.title}"</h4>
-                  <p className="text-gray-600 text-xs mb-3 text-center">{feature.publication}</p>
-                  <div className="text-center">
-                    <button className="text-xs font-medium border border-gray-900 text-gray-900 px-3 py-1 bg-transparent hover:bg-gray-900 hover:text-white transition-colors">
-                      READ MORE
-                    </button>
-                  </div>
+                <div className="press-card">
+                  <h4 className="mb-2"
+                      style={{
+                        fontFamily: 'var(--font-inter)',
+                        fontSize: '30px',
+                        fontWeight: 500,
+                        lineHeight: '36px',
+                        letterSpacing: '0.6px',
+                        color: '#1a1815'
+                      }}>
+                    "{feature.title}"
+                  </h4>
+                  <p className="mb-3"
+                     style={{
+                       fontFamily: 'var(--font-hanken-grotesk)',
+                       fontSize: '18px',
+                       fontWeight: 400,
+                       lineHeight: '28px',
+                       color: '#1a1815'
+                     }}>
+                    — {feature.publication}
+                  </p>
                 </div>
               </div>
             ))}
@@ -454,31 +567,73 @@ export default function HomePage() {
       </section>
 
       {/* June Journal Section */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-6">
+      <section style={{ padding: '120px 24px' }}>
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h3 className="text-4xl font-light mb-4">June Journal</h3>
-            <p className="text-gray-600">
-              Feast the June — what's inspiring us right now, from local art to the music to neighborhood discoveries and everything in between.
+            <h3 className="mb-4"
+                style={{
+                  fontFamily: 'var(--font-inter)',
+                  fontSize: '48px',
+                  fontWeight: 500,
+                  lineHeight: '54px',
+                  letterSpacing: '0.96px',
+                  color: '#1a1815'
+                }}>
+              June Journal
+            </h3>
+            <p style={{
+                 fontFamily: 'var(--font-hanken-grotesk)',
+                 fontSize: '18px',
+                 fontWeight: 400,
+                 lineHeight: '28px',
+                 color: '#1a1815'
+               }}>
+              Feels like June — what's inspiring us right now, from local art to live music to neighborhood discoveries and everything in between.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {(data.journalPosts || []).map((post, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '30px' }}>
+            {(data.journalPosts || []).map((post: any, index: number) => (
               <div key={index} className="group cursor-pointer">
                 <img 
-                  src={post.image || post.fields?.image || post.fields?.featuredImage || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop'}
-                  alt={post.title || post.fields?.title}
+                  src={post.image}
+                  alt={post.title}
                   className="w-full h-64 object-cover mb-4 group-hover:opacity-90 transition-opacity"
                 />
-                <div className="text-xs text-gray-500 mb-2 tracking-wider">
-                  {post.date || post.fields?.publishDate || "WEST LA | FEBRUARY 21, 2024"}
+                <div className="mb-2"
+                     style={{
+                       fontFamily: 'var(--font-inter)',
+                       fontSize: '18px',
+                       fontWeight: 500,
+                       lineHeight: '24px',
+                       letterSpacing: '1.08px',
+                       color: '#1a1815'
+                     }}>
+                  {post.date}
                 </div>
-                <h4 className="text-xl font-light leading-tight group-hover:text-gray-600 transition-colors">
-                  {post.title || post.fields?.title || "Hotel June Experience"}
+                <h4 className="mb-4 group-hover:text-gray-600 transition-colors"
+                    style={{
+                      fontFamily: 'var(--font-inter)',
+                      fontSize: '28px',
+                      fontWeight: 500,
+                      lineHeight: '34px',
+                      letterSpacing: '0.56px',
+                      color: '#1a1815'
+                    }}>
+                  {post.title}
                 </h4>
-                <button className="mt-4 text-sm font-medium border border-gray-900 text-gray-900 px-4 py-2 bg-transparent hover:bg-gray-900 hover:text-white transition-colors">
-                  READ MORE
+                <p className="mb-4"
+                   style={{
+                     fontFamily: 'var(--font-hanken-grotesk)',
+                     fontSize: '18px',
+                     fontWeight: 400,
+                     lineHeight: '28px',
+                     color: '#1a1815'
+                   }}>
+                  {post.excerpt}
+                </p>
+                <button className="btn-outline">
+                  Read More
                 </button>
               </div>
             ))}
@@ -486,12 +641,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Social Media Section - Golden Hour Carousel - FIXED */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h4 className="text-2xl font-light mb-8">Follow us @hoteljunemalibu and @hoteljunewestla</h4>
+      {/* Social Media Section */}
+      <section style={{ padding: '80px 24px', backgroundColor: '#fff7e9' }}>
+        <div className="max-w-6xl mx-auto text-center">
+          <h4 className="mb-8"
+              style={{
+                fontFamily: 'var(--font-inter)',
+                fontSize: '36px',
+                fontWeight: 500,
+                lineHeight: '42px',
+                letterSpacing: '0.72px',
+                color: '#1a1815'
+              }}>
+            Follow us @hoteljunemalibu and @hoteljunewestla
+          </h4>
           
-          {/* FIXED: Converted to carousel with 5 actual images */}
           <div className="relative">
             <div className="overflow-hidden">
               <div 
@@ -505,10 +669,7 @@ export default function HomePage() {
                   "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
                   "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400&h=400&fit=crop"
                 ].map((image, index) => (
-                  <div 
-                    key={index} 
-                    className="w-1/5 flex-shrink-0 px-2"
-                  >
+                  <div key={index} className="w-1/5 flex-shrink-0 px-2">
                     <img 
                       src={image}
                       alt={`Hotel June moment ${index + 1}`}
@@ -519,7 +680,6 @@ export default function HomePage() {
               </div>
             </div>
             
-            {/* Carousel navigation */}
             <button 
               onClick={() => setCurrentSocialIndex(prev => prev > 0 ? prev - 1 : 1)}
               className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white transition-colors"
@@ -532,78 +692,92 @@ export default function HomePage() {
             >
               <ChevronRight className="w-5 h-5" />
             </button>
-            
-            {/* Carousel indicators */}
-            <div className="flex justify-center mt-4 space-x-2">
-              {[0, 1].map((index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSocialIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    index === currentSocialIndex ? 'bg-gray-800' : 'bg-gray-300'
-                  }`}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-2xl mx-auto px-6 text-center">
-          <h4 className="text-xl font-light mb-6">Be the first to know everything about Hotel June.</h4>
-          <div className="flex gap-3">
+      <section style={{ padding: '80px 24px' }}>
+        <div className="max-w-2xl mx-auto text-center">
+          <h4 className="mb-6"
+              style={{
+                fontFamily: 'var(--font-inter)',
+                fontSize: '28px',
+                fontWeight: 500,
+                lineHeight: '34px',
+                letterSpacing: '0.56px',
+                color: '#1a1815'
+              }}>
+            Be the first to know everything about Hotel June.
+          </h4>
+          <div className="flex gap-3" style={{ backgroundColor: '#fff7e9', padding: '16px 40px', borderRadius: '4px' }}>
             <input 
               type="email" 
               placeholder="Email Address"
-              className="flex-1 px-4 py-2 border border-gray-300 focus:outline-none focus:border-gray-500 text-sm"
+              className="flex-1 px-4 py-2 border-0 bg-transparent focus:outline-none"
+              style={{
+                fontFamily: 'var(--font-hanken-grotesk)',
+                fontSize: '18px',
+                color: '#1a1815'
+              }}
             />
-            <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 font-medium transition-colors text-sm">
-              Subscribe
+            <button className="btn-primary">
+              Submit
             </button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-50 py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <footer style={{ backgroundColor: '#fff7e9', padding: '60px 24px' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div>
-              <h5 className="font-medium mb-3 text-sm">HOTEL JUNE</h5>
-              <p className="text-gray-600 text-xs">
-                Your Private Malibu Retreat
+              <h5 className="mb-3"
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    letterSpacing: '0.84px',
+                    color: '#1a1815'
+                  }}>
+                Offers Contact Colleagues Careers Gift Cards
+              </h5>
+            </div>
+            <div>
+              <h5 className="mb-3"
+                  style={{
+                    fontFamily: 'var(--font-inter)',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    letterSpacing: '0.84px',
+                    color: '#1a1815'
+                  }}>
+                Accessibility Terms of Use Privacy Policy Sitemap Select Language
+              </h5>
+            </div>
+            <div>
+              <p style={{
+                   fontFamily: 'var(--font-hanken-grotesk)',
+                   fontSize: '16px',
+                   fontWeight: 400,
+                   lineHeight: '26px',
+                   color: '#1a1815'
+                 }}>
+                A Proper Hospitality Hotel
               </p>
             </div>
             <div>
-              <h5 className="font-medium mb-3 text-sm">STAY</h5>
-              <ul className="space-y-1 text-xs text-gray-600">
-                <li><a href="#" className="hover:text-gray-900">Bungalows</a></li>
-                <li><a href="#" className="hover:text-gray-900">Amenities</a></li>
-                <li><a href="#" className="hover:text-gray-900">Book Now</a></li>
-              </ul>
+              <p style={{
+                   fontFamily: 'var(--font-inter)',
+                   fontSize: '14px',
+                   fontWeight: 500,
+                   letterSpacing: '0.84px',
+                   color: '#1a1815'
+                 }}>
+                Proper Hotels Hotel June The Collective
+              </p>
             </div>
-            <div>
-              <h5 className="font-medium mb-3 text-sm">DISCOVER</h5>
-              <ul className="space-y-1 text-xs text-gray-600">
-                <li><a href="#" className="hover:text-gray-900">Dining</a></li>
-                <li><a href="#" className="hover:text-gray-900">Wellness</a></li>
-                <li><a href="#" className="hover:text-gray-900">Events</a></li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="font-medium mb-3 text-sm">CONNECT</h5>
-              <ul className="space-y-1 text-xs text-gray-600">
-                <li><a href="#" className="hover:text-gray-900">Contact</a></li>
-                <li><a href="#" className="hover:text-gray-900">Press</a></li>
-                <li><a href="#" className="hover:text-gray-900">Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="mt-8 pt-6 border-t border-gray-200 text-center text-xs text-gray-600">
-            <p>&copy; 2025 Hotel June. All rights reserved.</p>
           </div>
         </div>
       </footer>

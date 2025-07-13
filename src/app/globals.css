@@ -1,26 +1,219 @@
 @import "tailwindcss";
 
+/* Hotel June Design System - Updated with Free Fonts */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Color System */
+  --bg-hotel-june-homepage: #fff7e9;
+  --bg-hero: #ebd8cc;
+  --primary-dark: #1a1815;
+  --primary-gold: #e1bc4d;
+  --border-accent: #b04c2d;
+  --white: #ffffff;
+  --text-overlay: rgba(26, 24, 21, 0.5);
+  
+  /* Typography Scale - Using Inter + Hanken Grotesk */
+  --font-display: var(--font-inter);
+  --font-body: var(--font-hanken-grotesk);
+  
+  /* Hero Typography */
+  --hero-title-size: 80px;
+  --hero-title-weight: 700;
+  --hero-title-line-height: 88px;
+  --hero-title-spacing: 1.6px;
+  
+  --hero-subtitle-size: 36px;
+  --hero-subtitle-weight: 500;
+  --hero-subtitle-line-height: 42px;
+  --hero-subtitle-spacing: 0.72px;
+  
+  /* Section Headlines */
+  --section-title-size: 48px;
+  --section-title-weight: 500;
+  --section-title-line-height: 54px;
+  --section-title-spacing: 0.96px;
+  
+  /* Body Text */
+  --body-text-size: 18px;
+  --body-text-weight: 400;
+  --body-text-line-height: 28px;
+  
+  /* Button Text */
+  --button-text-size: 18px;
+  --button-text-weight: 500;
+  --button-text-line-height: 28px;
+  --button-text-spacing: 0.9px;
+  
+  /* Spacing System */
+  --gap-large: 60px;
+  --gap-medium: 40px;
+  --gap-small: 24px;
+  --gap-xsmall: 12px;
+  
+  --padding-hero: 60px;
+  --padding-button: 16px 40px;
+  --padding-card: 30px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base Styles */
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  color: var(--primary-dark);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Typography Classes */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--hero-title-size);
+  font-weight: var(--hero-title-weight);
+  line-height: var(--hero-title-line-height);
+  letter-spacing: var(--hero-title-spacing);
+  text-align: center;
+}
+
+.hero-subtitle {
+  font-family: var(--font-display);
+  font-size: var(--hero-subtitle-size);
+  font-weight: var(--hero-subtitle-weight);
+  line-height: var(--hero-subtitle-line-height);
+  letter-spacing: var(--hero-subtitle-spacing);
+  text-align: center;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--section-title-size);
+  font-weight: var(--section-title-weight);
+  line-height: var(--section-title-line-height);
+  letter-spacing: var(--section-title-spacing);
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-size: var(--body-text-size);
+  font-weight: var(--body-text-weight);
+  line-height: var(--body-text-line-height);
+}
+
+.button-text {
+  font-family: var(--font-display);
+  font-size: var(--button-text-size);
+  font-weight: var(--button-text-weight);
+  line-height: var(--button-text-line-height);
+  letter-spacing: var(--button-text-spacing);
+}
+
+/* Component Styles */
+.btn-primary {
+  background: var(--primary-gold);
+  color: var(--primary-dark);
+  padding: var(--padding-button);
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.9px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-primary:hover {
+  background: #d4a940;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary-dark);
+  border: 1px solid var(--primary-dark);
+  padding: var(--padding-button);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.9px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-outline:hover {
+  background: var(--primary-dark);
+  color: var(--white);
+}
+
+.btn-accent {
+  background: transparent;
+  color: var(--primary-dark);
+  border: 1px solid var(--border-accent);
+  padding: var(--padding-button);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.9px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-accent:hover {
+  background: var(--border-accent);
+  color: var(--white);
+}
+
+/* Layout Components */
+.hero-background {
+  background-color: var(--bg-hero);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.booking-widget {
+  background: var(--text-overlay);
+  backdrop-filter: blur(12px);
+  padding: var(--gap-small);
+  border-radius: 8px;
+}
+
+.press-card {
+  background: rgba(255, 247, 233, 0.85);
+  padding: var(--padding-card);
+  border-radius: 4px;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  :root {
+    --hero-title-size: 48px;
+    --hero-title-line-height: 54px;
+    --hero-subtitle-size: 24px;
+    --hero-subtitle-line-height: 30px;
+    --section-title-size: 32px;
+    --section-title-line-height: 38px;
+    --padding-hero: 24px;
+  }
+}
+
+/* Spacing Utilities */
+.gap-hero { gap: var(--gap-large); }
+.gap-section { gap: var(--gap-medium); }
+.gap-card { gap: var(--gap-small); }
+.gap-inline { gap: var(--gap-xsmall); }
+
+.padding-hero { padding: var(--padding-hero); }
+.padding-section { padding: var(--gap-large) 0; }
+.padding-card { padding: var(--padding-card); }
+
+/* Utility Classes for Easier Development */
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+
+.text-primary { color: var(--primary-dark); }
+.text-gold { color: var(--primary-gold); }
+.bg-cream { background-color: var(--bg-hotel-june-homepage); }
+.bg-hero { background-color: var(--bg-hero); }
