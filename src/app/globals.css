@@ -1,10 +1,10 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap');
 
 /* Hotel June Design System - Exact Figma Implementation */
 :root {
-  /* Color System - From Figma Tokens */
+  /* Color System - Direct from Figma Tokens */
   --bg-hotel-june-homepage: #fff7e9;
   --bg-hero: #ebd8cc;
   --primary-dark: #1a1815;
@@ -15,11 +15,13 @@
   --frame-overlay: rgba(26, 24, 21, 0.5);
   --press-card-bg: rgba(255, 247, 233, 0.85);
   
-  /* Typography - Exact Figma Specs */
-  --font-display: 'Inter', sans-serif; /* Substitute for GT Eesti Display */
+  /* Typography - Free Font Alternatives */
+  --font-display: 'Outfit', sans-serif; /* Alternative to GT Eesti Display */
   --font-body: 'Hanken Grotesk', sans-serif;
   
-  /* Hero Typography - Exact Figma Values */
+  /* Exact Figma Typography Specifications */
+  
+  /* Hero Typography */
   --hero-title-size: 80px;
   --hero-title-weight: 700;
   --hero-title-line-height: 88px;
@@ -50,6 +52,7 @@
   --body-text-size: 18px;
   --body-text-weight: 400;
   --body-text-line-height: 28px;
+  --body-text-spacing: normal;
   
   /* Button Text */
   --button-text-size: 18px;
@@ -63,16 +66,52 @@
   --press-quote-line-height: 36px;
   --press-quote-spacing: 0.6px;
   
+  /* Newsletter Title */
+  --newsletter-title-size: 28px;
+  --newsletter-title-weight: 500;
+  --newsletter-title-line-height: 34px;
+  --newsletter-title-spacing: 0.56px;
+  
   /* Spacing System - From Figma */
   --gap-hero: 60px;
   --gap-section: 40px;
   --gap-card: 24px;
   --gap-inline: 12px;
+  --gap-frame: 30px;
   
   --padding-hero: 60px;
   --padding-button: 16px 40px;
   --padding-card: 30px;
   --padding-booking-widget: 24px;
+  
+  /* Exact Figma Gaps */
+  --gap-frame-58: 40px;
+  --gap-frame-54: 40px;
+  --gap-frame-55: 40px;
+  --gap-frame-56: 40px;
+  --gap-frame-57: 40px;
+  --gap-frame-133: 435px;
+  --gap-frame-132: 7px;
+  --gap-frame-113: 24px;
+  --gap-frame-123: 12px;
+  --gap-cta: 40px;
+  --gap-frame-121: 12px;
+  --gap-frame-118: 30px;
+  --gap-frame-125: 24px;
+  --gap-frame-117: 12px;
+  --gap-frame-126: 24px;
+  --gap-frame-135: 24px;
+  --gap-frame-124: 12px;
+  --gap-frame-108: 30px;
+  --gap-frame-111: 24px;
+  --gap-frame-112: 24px;
+  --gap-frame-127: 12px;
+  --gap-frame-128: 12px;
+  --gap-frame-130: 12px;
+  --gap-frame-131: 30px;
+  --gap-frame-137: 20px;
+  --gap-frame-59: 40px;
+  --gap-frame-134: 20px;
 }
 
 /* Base Styles */
@@ -97,6 +136,7 @@ body {
   line-height: var(--hero-title-line-height);
   letter-spacing: var(--hero-title-spacing);
   color: var(--white);
+  text-align: center;
 }
 
 .hero-subtitle {
@@ -106,6 +146,7 @@ body {
   line-height: var(--hero-subtitle-line-height);
   letter-spacing: var(--hero-subtitle-spacing);
   color: var(--white);
+  text-align: center;
 }
 
 .section-title {
@@ -115,6 +156,7 @@ body {
   line-height: var(--section-title-line-height);
   letter-spacing: var(--section-title-spacing);
   color: var(--primary-dark);
+  text-align: center;
 }
 
 .location-title {
@@ -124,6 +166,7 @@ body {
   line-height: var(--location-title-line-height);
   letter-spacing: var(--location-title-spacing);
   color: var(--primary-dark);
+  text-align: center;
 }
 
 .journal-title {
@@ -133,6 +176,17 @@ body {
   line-height: var(--journal-title-line-height);
   letter-spacing: var(--journal-title-spacing);
   color: var(--primary-dark);
+  text-align: left;
+}
+
+.newsletter-title {
+  font-family: var(--font-display);
+  font-size: var(--newsletter-title-size);
+  font-weight: var(--newsletter-title-weight);
+  line-height: var(--newsletter-title-line-height);
+  letter-spacing: var(--newsletter-title-spacing);
+  color: var(--primary-dark);
+  text-align: center;
 }
 
 .body-text {
@@ -140,7 +194,18 @@ body {
   font-size: var(--body-text-size);
   font-weight: var(--body-text-weight);
   line-height: var(--body-text-line-height);
+  letter-spacing: var(--body-text-spacing);
   color: var(--primary-dark);
+}
+
+.body-text-center {
+  font-family: var(--font-body);
+  font-size: var(--body-text-size);
+  font-weight: var(--body-text-weight);
+  line-height: var(--body-text-line-height);
+  letter-spacing: var(--body-text-spacing);
+  color: var(--primary-dark);
+  text-align: center;
 }
 
 .button-text {
@@ -158,6 +223,37 @@ body {
   line-height: var(--press-quote-line-height);
   letter-spacing: var(--press-quote-spacing);
   color: var(--primary-dark);
+  text-align: center;
+}
+
+.welcome-section-title {
+  font-family: var(--font-display);
+  font-size: var(--section-title-size);
+  font-weight: var(--section-title-weight);
+  line-height: var(--section-title-line-height);
+  letter-spacing: var(--section-title-spacing);
+  color: var(--primary-dark);
+  text-align: left;
+}
+
+.golden-hour-title {
+  font-family: var(--font-display);
+  font-size: var(--hero-subtitle-size);
+  font-weight: var(--hero-subtitle-weight);
+  line-height: var(--hero-subtitle-line-height);
+  letter-spacing: var(--hero-subtitle-spacing);
+  color: var(--primary-dark);
+  text-align: center;
+}
+
+.follow-title {
+  font-family: var(--font-display);
+  font-size: var(--hero-subtitle-size);
+  font-weight: var(--hero-subtitle-weight);
+  line-height: var(--hero-subtitle-line-height);
+  letter-spacing: var(--hero-subtitle-spacing);
+  color: var(--primary-dark);
+  text-align: center;
 }
 
 /* Component Styles - Exact Figma Implementation */
@@ -166,9 +262,14 @@ body {
   color: var(--primary-dark);
   padding: var(--padding-button);
   border: none;
-  border-radius: 4px;
+  border-radius: 0;
   transition: all 0.3s ease;
   cursor: pointer;
+  font-family: var(--font-display);
+  font-size: var(--button-text-size);
+  font-weight: var(--button-text-weight);
+  line-height: var(--button-text-line-height);
+  letter-spacing: var(--button-text-spacing);
 }
 
 .btn-primary:hover {
@@ -181,9 +282,14 @@ body {
   color: var(--primary-dark);
   border: 1px solid var(--primary-dark);
   padding: var(--padding-button);
-  border-radius: 4px;
+  border-radius: 0;
   transition: all 0.3s ease;
   cursor: pointer;
+  font-family: var(--font-display);
+  font-size: var(--button-text-size);
+  font-weight: var(--button-text-weight);
+  line-height: var(--button-text-line-height);
+  letter-spacing: var(--button-text-spacing);
 }
 
 .btn-outline:hover {
@@ -196,9 +302,14 @@ body {
   color: var(--primary-dark);
   border: 1px solid var(--border-accent);
   padding: var(--padding-button);
-  border-radius: 4px;
+  border-radius: 0;
   transition: all 0.3s ease;
   cursor: pointer;
+  font-family: var(--font-display);
+  font-size: var(--button-text-size);
+  font-weight: var(--button-text-weight);
+  line-height: var(--button-text-line-height);
+  letter-spacing: var(--button-text-spacing);
 }
 
 .btn-accent:hover {
@@ -217,16 +328,11 @@ body {
 .booking-widget {
   background: var(--frame-overlay);
   backdrop-filter: blur(12px);
-  padding: var(--padding-booking-widget);
-  border-radius: 8px;
+  border-radius: 0;
+  display: flex;
   gap: var(--gap-section);
-}
-
-.press-card {
-  background: var(--press-card-bg);
-  padding: var(--padding-card);
-  border-radius: 4px;
-  gap: var(--gap-card);
+  align-items: center;
+  padding: var(--padding-booking-widget);
 }
 
 .booking-field {
@@ -235,6 +341,48 @@ body {
   font-weight: var(--button-text-weight);
   letter-spacing: var(--button-text-spacing);
   color: var(--white);
+}
+
+.press-card {
+  background: var(--press-card-bg);
+  padding: var(--padding-card);
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-card);
+}
+
+/* Exact Figma Spacing */
+.padding-hero {
+  padding: var(--padding-hero);
+}
+
+.padding-section {
+  padding: calc(var(--gap-hero) * 2) 0;
+}
+
+.padding-card {
+  padding: var(--padding-card);
+}
+
+.gap-hero {
+  gap: var(--gap-hero);
+}
+
+.gap-section {
+  gap: var(--gap-section);
+}
+
+.gap-card {
+  gap: var(--gap-card);
+}
+
+.gap-inline {
+  gap: var(--gap-inline);
+}
+
+.gap-frame {
+  gap: var(--gap-frame);
 }
 
 /* Responsive Typography */
@@ -248,24 +396,55 @@ body {
     --section-title-line-height: 38px;
     --padding-hero: 24px;
   }
+  
+  .booking-widget {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
-/* Spacing Utilities */
-.gap-hero { gap: var(--gap-hero); }
-.gap-section { gap: var(--gap-section); }
-.gap-card { gap: var(--gap-card); }
-.gap-inline { gap: var(--gap-inline); }
-
-.padding-hero { padding: var(--padding-hero); }
-.padding-section { padding: calc(var(--gap-hero) * 2) 0; }
-.padding-card { padding: var(--padding-card); }
+@media (max-width: 480px) {
+  :root {
+    --hero-title-size: 36px;
+    --hero-title-line-height: 42px;
+    --hero-subtitle-size: 20px;
+    --hero-subtitle-line-height: 26px;
+  }
+}
 
 /* Utility Classes */
-.font-display { font-family: var(--font-display); }
-.font-body { font-family: var(--font-body); }
+.font-display {
+  font-family: var(--font-display);
+}
 
-.text-primary { color: var(--primary-dark); }
-.text-gold { color: var(--primary-gold); }
-.text-white { color: var(--white); }
-.bg-cream { background-color: var(--bg-hotel-june-homepage); }
-.bg-hero { background-color: var(--bg-hero); }
+.font-body {
+  font-family: var(--font-body);
+}
+
+.text-primary {
+  color: var(--primary-dark);
+}
+
+.text-gold {
+  color: var(--primary-gold);
+}
+
+.text-white {
+  color: var(--white);
+}
+
+.bg-cream {
+  background-color: var(--bg-hotel-june-homepage);
+}
+
+.bg-hero {
+  background-color: var(--bg-hero);
+}
+
+.bg-primary-dark {
+  background-color: var(--primary-dark);
+}
+
+.bg-gold {
+  background-color: var(--primary-gold);
+}

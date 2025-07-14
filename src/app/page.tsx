@@ -46,18 +46,18 @@ export default function HomePage() {
   const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Enhanced fallback data
+  // Enhanced fallback data with high-quality hotel images
   const fallbackData = {
     hero: {
       title: "Where It's Saturday\nAfternoon All Year Long",
       subtitle: "Boutique Hotels in Malibu and West LA",
-      heroImage: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop",
+      heroImage: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&h=1080&fit=crop&crop=center",
       welcomeTitle: "Welcome to Hotel June",
       welcomeDescription: "Hotel June is imbued with inviting design, vibrant food, and thoughtful details. It's where creative happenings draw you closer to the city outside your door, and the gathering crowd inspires a renewed love for time away from home.",
       welcomeImages: [
-        "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop",
-        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop", 
-        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&h=600&fit=crop"
+        "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=600&fit=crop&crop=center",
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=600&fit=crop&crop=center", 
+        "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&h=600&fit=crop&crop=center"
       ]
     },
     locations: {
@@ -65,61 +65,58 @@ export default function HomePage() {
         title: "West LA",
         description: "Located in West LA, just minutes from LAX and a short drive to Santa Monica and Venice",
         ctaText: "Explore",
-        image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&h=400&fit=crop"
+        image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&h=400&fit=crop&crop=center"
       },
       malibu: {
         title: "Malibu", 
         description: "Your Private Malibu Retreat, Nestled Into Four Lush Acres On Famed Pacific Coast Highway",
         ctaText: "Explore",
-        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
+        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop&crop=center"
       }
     },
     goldenHour: {
       title: "Golden Hour Starts Here",
       description: "Caravan Swim Club is Hotel June's breezy, Baja-inspired poolside restaurant and bar—a sun-soaked hideaway serving fresh coastal cuisine, natural wines, and spirited cocktails from day to night. Think fish tacos by the fire pit, golden hour gatherings, and a laid-back vibe that captures the essence of Westside summer, all year long.",
       ctaText: "Visit Caravan",
-      image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=600&fit=crop&crop=center"
     },
     journalPosts: [
       {
         date: "West LA | February 21, 2025",
         title: "Health and Wellness: Yoga, Spas, and Fitness on the West Side",
         excerpt: "Los Angeles is a haven for health and wellness enthusiasts, and nowhere is this more evident than in West LA, Santa Monica, and Venice. Whether you're a local looking...",
-        image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop"
+        image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=300&fit=crop&crop=center"
       },
       {
         date: "Malibu | February 21, 2025", 
         title: "Hotel June by Chelsea Cutler",
         excerpt: "Once a historic hideaway for wayfaring writers, musicians, and artists nestled in Point Dume, Hotel June remains a beacon of inspiration for a fresh generation of creatives. We're excited to share that Hotel...",
-        image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop"
+        image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop&crop=center"
       },
       {
         date: "West LA | February 21, 2025",
         title: "The Best of Santa Monica: A Guide to Restaurants, Shopping, Wellness, and Outdoor Activities",
         excerpt: "Santa Monica, with its beautiful beaches and vibrant atmosphere, offers a plethora of activities for visitors and locals alike.",
-        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop"
+        image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center"
       }
     ],
     pressFeatures: [
       {
         publication: "Travel + Leisure",
-        title: "11 Best Boutique Hotels in Los Angeles",
-        thumbnail: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100&h=100&fit=crop"
+        title: "11 Best Boutique Hotels in Los Angeles"
       },
       {
         publication: "Fathom", 
-        title: "The Best New Hotels",
-        thumbnail: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=100&h=100&fit=crop"
+        title: "The Best New Hotels"
       },
       {
         publication: "Condé Nast Traveler",
-        title: "The Aura of Relaxed Beach Living", 
-        thumbnail: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=100&h=100&fit=crop"
+        title: "The Aura of Relaxed Beach Living"
       }
     ]
   };
 
-  // Load content (same logic as before)
+  // Load content
   useEffect(() => {
     const fetchData = async () => {
       const client = createClient();
@@ -159,9 +156,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-cream">
-      {/* Hero Section - Using Design System Classes */}
+      {/* Hero Section - Exact Figma Implementation */}
       <section 
-        className="hero-background relative flex flex-col text-white text-center min-h-screen"
+        className="hero-background relative flex flex-col text-white min-h-screen"
         style={{
           backgroundImage: `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${data.hero.heroImage}')`,
           backgroundSize: 'cover',
@@ -202,13 +199,13 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Hero Content - Using Design System Typography */}
+        {/* Hero Content - Exact Figma Typography */}
         <div className="flex-1 flex items-center justify-center padding-hero">
-          <div className="max-w-4xl px-6">
-            <p className="hero-subtitle mb-6">
+          <div className="max-w-4xl px-6 flex flex-col gap-hero">
+            <p className="hero-subtitle">
               {data.hero.subtitle}
             </p>
-            <h1 className="hero-title mb-12">
+            <h1 className="hero-title">
               {data.hero.title?.split('\n').map((line: string, index: number) => (
                 <span key={index}>
                   {line}
@@ -219,12 +216,12 @@ export default function HomePage() {
           </div>
         </div>
         
-        {/* Booking Widget - Using Design System */}
+        {/* Booking Widget - Exact Figma Implementation */}
         <div className="px-6 pb-8">
-          <div className="max-w-4xl mx-auto booking-widget">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-              <div className="flex items-center text-left gap-section">
-                <MapPin className="w-5 h-5" />
+          <div className="max-w-4xl mx-auto">
+            <div className="booking-widget">
+              <div className="flex items-center text-left gap-inline">
+                <MapPin className="w-5 h-5 text-white" />
                 <div>
                   <div className="booking-field text-xs opacity-75">
                     Select Location
@@ -233,8 +230,8 @@ export default function HomePage() {
                 </div>
               </div>
               
-              <div className="flex items-center text-left gap-section">
-                <Calendar className="w-5 h-5" />
+              <div className="flex items-center text-left gap-inline">
+                <Calendar className="w-5 h-5 text-white" />
                 <div>
                   <div className="booking-field text-xs opacity-75">
                     Add Dates
@@ -243,8 +240,8 @@ export default function HomePage() {
                 </div>
               </div>
               
-              <div className="flex items-center text-left gap-section">
-                <Users className="w-5 h-5" />
+              <div className="flex items-center text-left gap-inline">
+                <Users className="w-5 h-5 text-white" />
                 <div>
                   <div className="booking-field text-xs opacity-75">
                     Total Guests
@@ -253,7 +250,7 @@ export default function HomePage() {
                 </div>
               </div>
               
-              <button className="btn-primary button-text">
+              <button className="btn-primary">
                 Book Now
               </button>
             </div>
@@ -261,12 +258,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Welcome Section - Design System Typography */}
+      {/* Welcome Section - Exact Figma Layout */}
       <section className="padding-section">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-hero">
             <div>
-              <h2 className="section-title mb-8">
+              <h2 className="welcome-section-title mb-8">
                 {data.hero.welcomeTitle}
               </h2>
               <p className="body-text">
@@ -315,7 +312,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Locations Section - Design System */}
+      {/* Locations Section - Exact Figma Typography */}
       <section className="padding-section">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
@@ -335,10 +332,10 @@ export default function HomePage() {
               <h4 className="location-title mb-4">
                 {data.locations?.westLA?.title}
               </h4>
-              <p className="body-text mb-6 max-w-md mx-auto">
+              <p className="body-text-center mb-6 max-w-md mx-auto">
                 {data.locations?.westLA?.description}
               </p>
-              <button className="btn-accent button-text">
+              <button className="btn-accent">
                 {data.locations?.westLA?.ctaText}
               </button>
             </div>
@@ -353,10 +350,10 @@ export default function HomePage() {
               <h4 className="location-title mb-4">
                 {data.locations?.malibu?.title}
               </h4>
-              <p className="body-text mb-6 max-w-md mx-auto">
+              <p className="body-text-center mb-6 max-w-md mx-auto">
                 {data.locations?.malibu?.description}
               </p>
-              <button className="btn-accent button-text">
+              <button className="btn-accent">
                 {data.locations?.malibu?.ctaText}
               </button>
             </div>
@@ -364,7 +361,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Golden Hour Section */}
+      {/* Golden Hour Section - Exact Figma Implementation */}
       <section className="padding-section bg-cream">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-hero">
@@ -376,13 +373,13 @@ export default function HomePage() {
               />
             </div>
             <div className="text-center">
-              <h3 className="hero-subtitle mb-6">
+              <h3 className="golden-hour-title mb-6">
                 {data.goldenHour?.title}
               </h3>
-              <p className="body-text mb-8 max-w-md mx-auto">
+              <p className="body-text-center mb-8 max-w-md mx-auto">
                 {data.goldenHour?.description}
               </p>
-              <button className="btn-primary button-text">
+              <button className="btn-primary">
                 {data.goldenHour?.ctaText}
               </button>
             </div>
@@ -390,7 +387,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* In the Press Section */}
+      {/* In the Press Section - Exact Figma Layout */}
       <section className="padding-section bg-cream">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
@@ -399,7 +396,7 @@ export default function HomePage() {
             </h3>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-card">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-frame">
             {(data.pressFeatures || []).map((feature: any, index: number) => (
               <div key={index} className="text-center">
                 <div className="press-card">
@@ -416,14 +413,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* June Journal Section */}
+      {/* June Journal Section - Exact Figma Typography */}
       <section className="padding-section">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <h3 className="section-title mb-4">
               June Journal
             </h3>
-            <p className="body-text">
+            <p className="body-text-center">
               Feels like June — what's inspiring us right now, from local art to live music to neighborhood discoveries and everything in between.
             </p>
           </div>
@@ -445,7 +442,7 @@ export default function HomePage() {
                 <p className="body-text mb-4">
                   {post.excerpt}
                 </p>
-                <button className="btn-outline button-text">
+                <button className="btn-outline">
                   Read More
                 </button>
               </div>
@@ -454,10 +451,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Social Media Section */}
+      {/* Social Media Section - Exact Figma Typography */}
       <section className="padding-section bg-cream">
         <div className="max-w-6xl mx-auto px-6 text-center">
-          <h4 className="hero-subtitle mb-8">
+          <h4 className="follow-title mb-8">
             Follow us @hoteljunemalibu and @hoteljunewestla
           </h4>
           
@@ -468,11 +465,11 @@ export default function HomePage() {
                 style={{ transform: `translateX(-${currentSocialIndex * 20}%)` }}
               >
                 {[
-                  "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=400&fit=crop",
-                  "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=400&fit=crop", 
-                  "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop",
-                  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
-                  "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400&h=400&fit=crop"
+                  "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=400&fit=crop&crop=center",
+                  "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=400&fit=crop&crop=center", 
+                  "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=400&fit=crop&crop=center",
+                  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=center",
+                  "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400&h=400&fit=crop&crop=center"
                 ].map((image, index) => (
                   <div key={index} className="w-1/5 flex-shrink-0 px-2">
                     <img 
@@ -501,10 +498,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
+      {/* Newsletter Section - Exact Figma Typography */}
       <section className="padding-section">
         <div className="max-w-2xl mx-auto px-6 text-center">
-          <h4 className="journal-title mb-6">
+          <h4 className="newsletter-title mb-6">
             Be the first to know everything about Hotel June.
           </h4>
           <div className="bg-cream flex gap-3 rounded padding-card">
@@ -513,14 +510,14 @@ export default function HomePage() {
               placeholder="Email Address"
               className="flex-1 px-4 py-2 border-0 bg-transparent focus:outline-none body-text"
             />
-            <button className="btn-primary button-text">
+            <button className="btn-primary">
               Submit
             </button>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer - Exact Figma Layout */}
       <footer className="bg-cream padding-hero">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
